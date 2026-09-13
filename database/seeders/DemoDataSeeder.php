@@ -40,7 +40,7 @@ class DemoDataSeeder extends Seeder
         ]);
 
         Order::query()->create([
-            'table_id' => DiningTable::firstWhere('code', 'TAV-001')->id,
+            'table_id' => DiningTable::firstOrCreate(['name' => 'Tavolo 1'], ['zone_id' => 1, 'status' => 'available', 'is_active' => true])->id,
             'status' => 'open',
             'total' => 0,
         ]);

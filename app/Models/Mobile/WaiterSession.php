@@ -11,8 +11,12 @@ use App\Models\User;
 use Modules\Xot\Models\XotBaseModel;
 
 /**
+ * @method static \Illuminate\Database\Eloquent\Factories\Factory<static> factory($count = null, $state = [])
  * @property string $id
  * @property string $token
+ * @property string|null $user_id
+ * @property string|null $device_id
+ * @property string|null $shift_id
  * @property float|null $location_lat
  * @property float|null $location_lng
  * @property \Illuminate\Support\Carbon|null $last_active_at

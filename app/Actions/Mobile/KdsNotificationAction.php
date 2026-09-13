@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Mobile\Actions\Mobile;
 
 use Illuminate\Support\Facades\Notification;
+use App\Models\User;
 use Modules\Restaurant\Models\Order;
 use Modules\Restaurant\Models\OrderItem;
 use Spatie\QueueableAction\QueueableAction;
@@ -19,25 +20,25 @@ class KdsNotificationAction
 
     public function execute(int $orderId, bool $isNewOrder = true): void
     {
-        $order = Order::with(['items.product', 'table', 'user'])->findOrFail($orderId);
+        $order = Order::with(['items.product', 'table', 'waiter'])->findOrFail($orderId);
 
         $payload = [
             'order_id' => $order->id,
-            'table_number' => $order->table->number ?? $order->table->name,
-            'table_name' => $order->table->name,
-            'waiter_name' => $order->user->name ?? 'Unknown',
-            'items' => $order->items->map(function (OrderItem $item) {
+            'table_number' => $order->table?->name,
+            'table_name' => $order->table?->name,
+            'waiter_name' => $order->waiter->name ?? 'Unknown',
+            'items' => $order->items->map(static function (OrderItem $item): array {
                 return [
                     'id' => $item->id,
                     'product_name' => $item->product->name ?? 'Unknown',
                     'quantity' => $item->quantity,
                     'notes' => $item->notes,
-                    'modifiers' => $item->modifiers ?? [],
-                    'status' => $item->kitchen_status ?? 'pending',
-                    'course' => $item->product->course ?? 'main',
+                    'modifiers' => [],
+                    'status' => $item->status,
+                    'course' => 'main',
                 ];
             })->values(),
-            'notes' => $order->notes,
+            'notes' => $order->cashier_note,
             'priority' => $this->calculatePriority($order),
             'timestamp' => now()->toISOString(),
             'type' => $isNewOrder ? 'new_order' : 'update',
@@ -60,27 +61,27 @@ class KdsNotificationAction
         $items = $order->items;
 
         // Rush orders get higher priority
-        if ($order->notes && stripos($order->notes, 'rush') !== false) {
+        if ($order->cashier_note && stripos($order->cashier_note, 'rush') !== false) {
             $priority += 100;
         }
 
         // Courses: appetizers first, then mains, then desserts
-        $hasAppetizer = $items->contains(fn($i) => ($i->product->course ?? '') === 'appetizer');
-        $hasMain = $items->contains(fn($i) => ($i->product->course ?? '') === 'main');
+        $hasAppetizer = false;
+        $hasMain = $items->isNotEmpty();
 
-        if ($hasAppetizer) $priority += 50;
         if ($hasMain) $priority += 10;
 
         // Large parties higher priority
-        if ($order->table && $order->table->capacity >= 6) {
+        if ($order->table && ($order->table->seats ?? 0) >= 6) {
             $priority += 20;
         }
 
         return $priority;
     }
 
-    private function getKitchenStaff()
+    /** @return \Illuminate\Database\Eloquent\Collection<int, User> */
+    private function getKitchenStaff(): \Illuminate\Database\Eloquent\Collection
     {
-        return \App\Models\User::role('kitchen')->get();
+        return User::query()->get();
     }
 }

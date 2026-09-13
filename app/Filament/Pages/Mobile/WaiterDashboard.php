@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Filament\Pages\Mobile;
 
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
@@ -15,7 +15,7 @@ use Modules\Xot\Filament\Pages\XotBasePage;
 
 class WaiterDashboard extends XotBasePage
 {
-    protected static ?string $model = WaiterSession::class;
+    public static ?string $model = WaiterSession::class;
 
     public function getView(): string
     {

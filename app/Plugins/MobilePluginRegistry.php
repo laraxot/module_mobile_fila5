@@ -20,6 +20,8 @@ class MobilePluginRegistry
 
     /**
      * Get plugin configuration for the waiter app.
+     *
+     * @return array<string, array<string, bool|string>>
      */
     public static function getPluginConfig(): array
     {

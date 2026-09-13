@@ -43,8 +43,8 @@ class MobileController extends Controller
         $result = $this->takeOrderAction->execute(
             $request->string('waiter_session_id')->toString(),
             $request->integer('table_id'),
-            $request->array('items'),
-            $request->array('notes') ?: null,
+            $this->normalizeItems($request->array('items')),
+            $this->normalizeNotes($request->array('notes')) ?: null,
             $request->has('shift_id') ? $request->string('shift_id')->toString() : null
         );
 
@@ -59,14 +59,66 @@ class MobileController extends Controller
         $result = $this->splitBillAction->execute(
             $request->integer('order_id'),
             $request->string('split_type')->toString(),
-            $request->array('splits'),
-            $request->array('payment_methods') ?: null
+            $this->normalizeSplits($request->array('splits')),
+            array_values(array_map(static fn (mixed $value): string => is_scalar($value) ? (string) $value : '', $request->array('payment_methods'))) ?: null
         );
 
         return response()->json([
             'success' => true,
             'data' => $result,
         ]);
+    }
+
+    /**
+     * @param array<int|string, mixed> $notes
+     * @return array<string, mixed>
+     */
+    private function normalizeNotes(array $notes): array
+    {
+        $result = [];
+        foreach ($notes as $key => $value) {
+            if (is_scalar($value)) {
+                $result[(string) $key] = $value;
+            }
+        }
+        return $result;
+    }
+
+    /** @param array<int|string, mixed> $items
+     * @return list<array{product_id: int, quantity: int|float, unit_price: int|float, notes?: string|null, modifiers?: array<mixed>}> */
+    private function normalizeItems(array $items): array
+    {
+        return array_values(array_filter(array_map(static function (mixed $item): ?array {
+            if (!is_array($item)) {
+                return null;
+            }
+
+            return [
+                'product_id' => is_numeric($item['product_id'] ?? null) ? (int) $item['product_id'] : 0,
+                'quantity' => is_numeric($item['quantity'] ?? null) ? (float) $item['quantity'] : 1.0,
+                'unit_price' => is_numeric($item['unit_price'] ?? null) ? (float) $item['unit_price'] : 0.0,
+                'notes' => is_scalar($item['notes'] ?? null) ? (string) $item['notes'] : null,
+                'modifiers' => is_array($item['modifiers'] ?? null) ? $item['modifiers'] : [],
+            ];
+        }, $items)));
+    }
+
+    /** @param array<int|string, mixed> $splits
+     * @return list<array{amount?: float|int, notes?: string, item_ids?: list<int>}> */
+    private function normalizeSplits(array $splits): array
+    {
+        return array_values(array_filter(array_map(static function (mixed $split): ?array {
+            if (!is_array($split)) {
+                return null;
+            }
+
+            $itemIds = $split['item_ids'] ?? null;
+            return [
+                ...(is_numeric($split['amount'] ?? null) ? ['amount' => (float) $split['amount']] : []),
+                ...(is_scalar($split['notes'] ?? null) ? ['notes' => (string) $split['notes']] : []),
+                ...(is_array($itemIds) ? ['item_ids' => array_values(array_map(static fn (mixed $id): int => is_numeric($id) ? (int) $id : 0, $itemIds))] : []),
+            ];
+        }, $splits)));
     }
 
     public function scanQr(Request $request): JsonResponse

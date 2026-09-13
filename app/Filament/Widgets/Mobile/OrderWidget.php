@@ -49,6 +49,6 @@ class OrderWidget extends Widget
 
     private function checkConnection(): bool
     {
-        return Cache::get('mobile_queue_sync_connection', false);
+        return (bool) Cache::get('mobile_queue_sync_connection', false);
     }
 }

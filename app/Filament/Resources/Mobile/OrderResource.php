@@ -16,7 +16,7 @@ class OrderResource extends XotBaseResource
 
     public static function getNavigationBadge(): ?string
     {
-        return OrderQueue::where('status', OrderQueue::STATUS_PENDING)->count();
+        return (string) OrderQueue::where('status', OrderQueue::STATUS_PENDING)->count();
     }
 
     public static function getDefaultTableSortColumn(): ?string

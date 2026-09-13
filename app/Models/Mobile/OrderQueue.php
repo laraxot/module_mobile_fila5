@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Xot\Models\XotBaseModel;
 
 /**
+ * @method static \Illuminate\Database\Eloquent\Factories\Factory<static> factory($count = null, $state = [])
  * @property string $id
  * @property int $table_id
  * @property array<string, mixed> $order_data

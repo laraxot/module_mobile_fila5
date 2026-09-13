@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Modules\Mobile\Database\Factories;
 
 use Modules\Mobile\Models\OrderQueue;
+use Modules\Mobile\Database\Factories\WaiterSessionFactory;
+use Modules\Restaurant\Database\Factories\DiningTableFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /** @extends Factory<OrderQueue> */
@@ -15,11 +17,11 @@ class OrderQueueFactory extends Factory
     public function definition(): array
     {
         return [
-            'waiter_session_id' => function () {
-                return \Modules\Mobile\Models\WaiterSession::factory()->create()->id;
+            'waiter_session_id' => static function (): string {
+                return (new WaiterSessionFactory())->createOne()->id;
             },
-            'table_id' => function () {
-                return \Modules\Restaurant\Models\DiningTable::factory()->create()->id;
+            'table_id' => static function (): int {
+                return (new DiningTableFactory())->createOne()->id;
             },
             'order_data' => [
                 'items' => [
