@@ -4,13 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Filament\Pages\Mobile;
 
-<<<<<<< HEAD
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
-=======
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
->>>>>>> laraxot/dev
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
@@ -20,11 +15,7 @@ use Modules\Xot\Filament\Pages\XotBasePage;
 
 class WaiterDashboard extends XotBasePage
 {
-<<<<<<< HEAD
     public static ?string $model = WaiterSession::class;
-=======
-    protected static ?string $model = WaiterSession::class;
->>>>>>> laraxot/dev
 
     public function getView(): string
     {

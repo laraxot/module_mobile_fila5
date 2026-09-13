@@ -11,7 +11,6 @@ use Modules\Restaurant\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-<<<<<<< HEAD
 /** @return list<array{product_id: int, quantity: float|int, unit_price: float|int, notes?: string|null, modifiers?: array<mixed>}> */
 $normalizeItems = static function (array $items): array {
     $normalized = [];
@@ -61,8 +60,6 @@ $normalizeSplits = static function (array $splits): array {
     return $normalized;
 };
 
-=======
->>>>>>> laraxot/dev
 /*
 |--------------------------------------------------------------------------
 | Mobile API Routes
@@ -74,30 +71,17 @@ $normalizeSplits = static function (array $splits): array {
 |
 */
 
-<<<<<<< HEAD
 Route::prefix('api/mobile')->middleware(['auth:sanctum'])->group(function () use ($normalizeItems, $normalizeSplits) {
     // Floor plan and table management
     Route::get('floor-plan', function (ViewFloorPlanAction $action, Request $request) {
         return response()->json($action->execute(
             $request->integer('zone_id') ?: null,
-=======
-Route::prefix('api/mobile')->middleware(['auth:sanctum'])->group(function () {
-    // Floor plan and table management
-    Route::get('floor-plan', function (ViewFloorPlanAction $action, Request $request) {
-        return response()->json($action->execute(
-            $request->input('zone_id'),
->>>>>>> laraxot/dev
             $request->header('X-Waiter-Session')
         ));
     });
 
-<<<<<<< HEAD
     Route::get('tables/{table}', function (int $table) {
         $t = \Modules\Restaurant\Models\DiningTable::with('orders')->findOrFail($table);
-=======
-    Route::get('tables/{table}', function ($table) {
-        $t = \Modules\Restaurant\Models\DiningTable::with('currentOrder')->findOrFail($table);
->>>>>>> laraxot/dev
         return response()->json([
             'success' => true,
             'data' => $t,
@@ -105,7 +89,6 @@ Route::prefix('api/mobile')->middleware(['auth:sanctum'])->group(function () {
     });
 
     // Order taking
-<<<<<<< HEAD
     Route::post('orders/take', function (TakeOrderAction $action, Request $request) use ($normalizeItems) {
         $result = $action->execute(
             $request->string('waiter_session_id')->toString(),
@@ -113,15 +96,6 @@ Route::prefix('api/mobile')->middleware(['auth:sanctum'])->group(function () {
             $normalizeItems($request->array('items')),
             null,
             $request->string('shift_id')->toString() ?: null
-=======
-    Route::post('orders/take', function (TakeOrderAction $action, Request $request) {
-        $result = $action->execute(
-            $request->input('waiter_session_id'),
-            $request->input('table_id'),
-            $request->input('items', []),
-            $request->input('notes'),
-            $request->input('shift_id')
->>>>>>> laraxot/dev
         );
         return response()->json([
             'success' => true,
@@ -130,21 +104,12 @@ Route::prefix('api/mobile')->middleware(['auth:sanctum'])->group(function () {
     });
 
     // Split bill
-<<<<<<< HEAD
     Route::post('orders/split', function (SplitBillAction $action, Request $request) use ($normalizeSplits) {
         $result = $action->execute(
             $request->integer('order_id'),
             $request->string('split_type')->toString(),
             $normalizeSplits($request->array('splits')),
             array_values(array_filter($request->array('payment_methods'), 'is_string')) ?: null
-=======
-    Route::post('orders/split', function (SplitBillAction $action, Request $request) {
-        $result = $action->execute(
-            $request->input('order_id'),
-            $request->input('split_type'),
-            $request->input('splits', []),
-            $request->input('payment_methods')
->>>>>>> laraxot/dev
         );
         return response()->json([
             'success' => true,
@@ -164,11 +129,7 @@ Route::prefix('api/mobile')->middleware(['auth:sanctum'])->group(function () {
     // QR scanning
     Route::post('scan-qr', function (ScanQrAction $action, Request $request) {
         $result = $action->execute(
-<<<<<<< HEAD
             $request->string('qr_code')->toString(),
-=======
-            $request->input('qr_code'),
->>>>>>> laraxot/dev
             $request->header('X-Waiter-Session')
         );
         return response()->json($result);
@@ -178,17 +139,10 @@ Route::prefix('api/mobile')->middleware(['auth:sanctum'])->group(function () {
     Route::post('session/start', function (Request $request) {
         $session = WaiterSession::create([
             'user_id' => auth()->id(),
-<<<<<<< HEAD
             'device_id' => $request->string('device_id')->toString(),
             'device_name' => $request->string('device_name')->toString(),
             'platform' => $request->string('platform')->toString(),
             'token' => $request->string('token')->toString(),
-=======
-            'device_id' => $request->input('device_id'),
-            'device_name' => $request->input('device_name'),
-            'platform' => $request->input('platform'),
-            'token' => $request->input('token'),
->>>>>>> laraxot/dev
         ]);
         return response()->json([
             'success' => true,
@@ -198,11 +152,7 @@ Route::prefix('api/mobile')->middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::post('session/end', function (Request $request) {
-<<<<<<< HEAD
         $session = WaiterSession::where('device_id', $request->string('device_id')->toString())->first();
-=======
-        $session = WaiterSession::where('device_id', $request->input('device_id'))->first();
->>>>>>> laraxot/dev
         if ($session) {
             $session->update(['is_active' => false]);
         }
@@ -210,21 +160,12 @@ Route::prefix('api/mobile')->middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::post('session/heartbeat', function (Request $request) {
-<<<<<<< HEAD
         $session = WaiterSession::where('device_id', $request->string('device_id')->toString())->first();
         if ($session) {
             $session->update([
                 'last_active_at' => now(),
                 'location_lat' => $request->float('location_lat'),
                 'location_lng' => $request->float('location_lng'),
-=======
-        $session = WaiterSession::where('device_id', $request->input('device_id'))->first();
-        if ($session) {
-            $session->update([
-                'last_active_at' => now(),
-                'location_lat' => $request->input('location_lat'),
-                'location_lng' => $request->input('location_lng'),
->>>>>>> laraxot/dev
             ]);
         }
         return response()->json([
@@ -235,31 +176,19 @@ Route::prefix('api/mobile')->middleware(['auth:sanctum'])->group(function () {
     });
 
     // KDS integration
-<<<<<<< HEAD
     Route::post('kds/notify/{order}', function (KdsNotificationAction $action, int $order, Request $request) {
-=======
-    Route::post('kds/notify/{order}', function (KdsNotificationAction $action, $order, Request $request) {
->>>>>>> laraxot/dev
         $action->execute($order, $request->boolean('is_new_order', true));
         return response()->json(['success' => true, 'message' => 'KDS notification sent']);
     });
 
     // Offline queue sync
     Route::post('queue/sync', function (SyncOfflineOrdersAction $action, Request $request) {
-<<<<<<< HEAD
         $result = $action->execute($request->string('waiter_session_id')->toString());
-=======
-        $result = $action->execute($request->input('waiter_session_id'));
->>>>>>> laraxot/dev
         return response()->json($result);
     });
 
     Route::get('queue/pending', function (Request $request) {
-<<<<<<< HEAD
         $queue = \Modules\Mobile\Models\OrderQueue::where('waiter_session_id', $request->string('waiter_session_id')->toString())
-=======
-        $queue = \Modules\Mobile\Models\OrderQueue::where('waiter_session_id', $request->input('waiter_session_id'))
->>>>>>> laraxot/dev
             ->where('status', \Modules\Mobile\Models\OrderQueue::STATUS_PENDING)
             ->latest()
             ->get();
@@ -282,8 +211,4 @@ Route::prefix('mobile')->group(function () {
             'data' => \Modules\Restaurant\Models\Product::findOrFail($item),
         ]);
     })->where('item', '[0-9]+');
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> laraxot/dev

@@ -29,14 +29,9 @@ class MobileController extends Controller
 
     public function getFloorPlan(Request $request): JsonResponse
     {
-<<<<<<< HEAD
         $zoneId = $request->integer('zone_id') ?: null;
         $result = $this->viewFloorPlanAction->execute(
             $zoneId,
-=======
-        $result = $this->viewFloorPlanAction->execute(
-            $request->input('zone_id'),
->>>>>>> laraxot/dev
             $request->header('X-Waiter-Session')
         );
 
@@ -46,19 +41,11 @@ class MobileController extends Controller
     public function takeOrder(Request $request): JsonResponse
     {
         $result = $this->takeOrderAction->execute(
-<<<<<<< HEAD
             $request->string('waiter_session_id')->toString(),
             $request->integer('table_id'),
             $this->normalizeItems($request->array('items')),
             $this->normalizeNotes($request->array('notes')) ?: null,
             $request->has('shift_id') ? $request->string('shift_id')->toString() : null
-=======
-            $request->input('waiter_session_id'),
-            $request->input('table_id'),
-            $request->input('items', []),
-            $request->input('notes'),
-            $request->input('shift_id')
->>>>>>> laraxot/dev
         );
 
         return response()->json([
@@ -70,17 +57,10 @@ class MobileController extends Controller
     public function splitBill(Request $request): JsonResponse
     {
         $result = $this->splitBillAction->execute(
-<<<<<<< HEAD
             $request->integer('order_id'),
             $request->string('split_type')->toString(),
             $this->normalizeSplits($request->array('splits')),
             array_values(array_map(static fn (mixed $value): string => is_scalar($value) ? (string) $value : '', $request->array('payment_methods'))) ?: null
-=======
-            $request->input('order_id'),
-            $request->input('split_type'),
-            $request->input('splits', []),
-            $request->input('payment_methods')
->>>>>>> laraxot/dev
         );
 
         return response()->json([
@@ -89,7 +69,6 @@ class MobileController extends Controller
         ]);
     }
 
-<<<<<<< HEAD
     /**
      * @param array<int|string, mixed> $notes
      * @return array<string, mixed>
@@ -146,12 +125,6 @@ class MobileController extends Controller
     {
         $result = $this->scanQrAction->execute(
             $request->string('qr_code')->toString(),
-=======
-    public function scanQr(Request $request): JsonResponse
-    {
-        $result = $this->scanQrAction->execute(
-            $request->input('qr_code'),
->>>>>>> laraxot/dev
             $request->header('X-Waiter-Session')
         );
 
@@ -171,11 +144,7 @@ class MobileController extends Controller
     public function syncQueue(Request $request): JsonResponse
     {
         $result = $this->syncOfflineOrdersAction->execute(
-<<<<<<< HEAD
             $request->string('waiter_session_id')->toString()
-=======
-            $request->input('waiter_session_id')
->>>>>>> laraxot/dev
         );
 
         return response()->json($result);
@@ -243,8 +212,4 @@ class MobileController extends Controller
             'data' => $queue,
         ]);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> laraxot/dev

@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Filament\Forms\Components;
 
-<<<<<<< HEAD
 use Filament\Schemas\Components\Grid;
-=======
-use Filament\Forms\Components\Grid;
->>>>>>> laraxot/dev
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Hidden;
-<<<<<<< HEAD
 use Filament\Schemas\Components\Section;
 
 class OrderForm
@@ -24,12 +19,6 @@ class OrderForm
      * @param array<string, mixed> $item
      * @return array<int, mixed>
      */
-=======
-use Filament\Forms\Components\Section;
-
-class OrderForm
-{
->>>>>>> laraxot/dev
     public static function getForm(array $item): array
     {
         return [

@@ -13,18 +13,12 @@ class KdsOrderNotification extends Notification
 {
     use Queueable;
 
-<<<<<<< HEAD
     /** @param array<string, mixed> $payload */
-=======
->>>>>>> laraxot/dev
     public function __construct(private readonly array $payload)
     {
     }
 
-<<<<<<< HEAD
     /** @return list<string> */
-=======
->>>>>>> laraxot/dev
     public function via(object $notifiable): array
     {
         return ['broadcast', 'database'];
@@ -41,15 +35,11 @@ class KdsOrderNotification extends Notification
         ]);
     }
 
-<<<<<<< HEAD
     /** @return array<string, mixed> */
-=======
->>>>>>> laraxot/dev
     public function toDatabase(object $notifiable): array
     {
         return [
             'title' => 'New Order',
-<<<<<<< HEAD
             'body' => sprintf('Table %s - %d items', $this->scalar($this->payload['table_number'] ?? null), count(is_array($this->payload['items'] ?? null) ? $this->payload['items'] : [])),
             'data' => $this->payload,
         ];
@@ -59,36 +49,23 @@ class KdsOrderNotification extends Notification
     {
         return is_scalar($value) ? (string) $value : '';
     }
-=======
-            'body' => "Table {$this->payload['table_number']} - " . count($this->payload['items']) . " items",
-            'data' => $this->payload,
-        ];
-    }
->>>>>>> laraxot/dev
 }
 
 class KdsPushNotification extends Notification
 {
     use Queueable;
 
-<<<<<<< HEAD
     /** @param array<string, mixed> $payload */
-=======
->>>>>>> laraxot/dev
     public function __construct(private readonly array $payload)
     {
     }
 
-<<<<<<< HEAD
     /** @return list<string> */
-=======
->>>>>>> laraxot/dev
     public function via(object $notifiable): array
     {
         return ['onesignal'];
     }
 
-<<<<<<< HEAD
     /** @return array<string, mixed> */
     public function toOneSignal(object $notifiable): array
     {
@@ -106,16 +83,3 @@ class KdsPushNotification extends Notification
         return is_scalar($value) ? (string) $value : '';
     }
 }
-=======
-    public function toOneSignal(object $notifiable): array
-    {
-        return [
-            'app_id' => env('NATIVEPHP_ONESIGNAL_APP_ID'),
-            'include_external_user_ids' => [$this->payload['waiter_id'] ?? ''],
-            'headings' => ['en' => 'New Order - Table ' . $this->payload['table_number']],
-            'contents' => ['en' => 'New order from Table ' . $this->payload['table_number']],
-            'data' => $this->payload,
-        ];
-    }
-}
->>>>>>> laraxot/dev

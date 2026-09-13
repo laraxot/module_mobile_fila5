@@ -12,11 +12,7 @@ class OrderSeeder extends Seeder
 {
     public function run(): void
     {
-<<<<<<< HEAD
         $table = DiningTable::firstOrCreate(['name' => 'Tavolo 1'], ['zone_id' => 1, 'status' => 'available', 'is_active' => true]);
-=======
-        $table = DiningTable::firstWhere('code', 'TAV-001');
->>>>>>> laraxot/dev
 
         Order::query()->create([
             'table_id' => $table->id,

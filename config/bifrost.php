@@ -1,13 +1,8 @@
 <?php
 
 return [
-<<<<<<< HEAD
     'app_name' => (getenv('NATIVEPHP_APP_NAME') ?: 'Sottana Waiter'),
     'version' => (getenv('NATIVEPHP_APP_VERSION') ?: '1.0.0'),
-=======
-    'app_name' => env('NATIVEPHP_APP_NAME', 'Sottana Waiter'),
-    'version' => env('NATIVEPHP_APP_VERSION', '1.0.0'),
->>>>>>> laraxot/dev
     'description' => 'Native mobile app for waiters to take orders and manage restaurant floor plans',
     'identifier' => 'com.sottana.waiter',
     'window' => [
@@ -57,15 +52,9 @@ return [
             'push_notifications' => [
                 'enabled' => true,
                 'provider' => 'onesignal',
-<<<<<<< HEAD
                 'app_id' => (getenv('NATIVEPHP_ONESIGNAL_APP_ID') ?: null),
                 'api_key' => (getenv('NATIVEPHP_ONESIGNAL_API_KEY') ?: null),
                 'safari_web_id' => (getenv('NATIVEPHP_ONESIGNAL_SAFARI_WEB_ID') ?: null),
-=======
-                'app_id' => env('NATIVEPHP_ONESIGNAL_APP_ID'),
-                'api_key' => env('NATIVEPHP_ONESIGNAL_API_KEY'),
-                'safari_web_id' => env('NATIVEPHP_ONESIGNAL_SAFARI_WEB_ID'),
->>>>>>> laraxot/dev
             ],
             'biometrics' => [
                 'enabled' => true,
@@ -94,11 +83,7 @@ return [
             ],
             'secure_storage' => [
                 'enabled' => true,
-<<<<<<< HEAD
                 'key' => (getenv('NATIVEPHP_STORAGE_KEY') ?: null),
-=======
-                'key' => env('NATIVEPHP_STORAGE_KEY'),
->>>>>>> laraxot/dev
             ],
             'gallery' => [
                 'enabled' => true,
@@ -119,17 +104,10 @@ return [
             'target_sdk' => 34,
             'compile_sdk' => 34,
             'signing' => [
-<<<<<<< HEAD
                 'store_file' => (getenv('ANDROID_KEYSTORE_PATH') ?: null),
                 'store_password' => (getenv('ANDROID_KEYSTORE_PASSWORD') ?: null),
                 'key_alias' => (getenv('ANDROID_KEY_ALIAS') ?: null),
                 'key_password' => (getenv('ANDROID_KEY_PASSWORD') ?: null),
-=======
-                'store_file' => env('ANDROID_KEYSTORE_PATH'),
-                'store_password' => env('ANDROID_KEYSTORE_PASSWORD'),
-                'key_alias' => env('ANDROID_KEY_ALIAS'),
-                'key_password' => env('ANDROID_KEY_PASSWORD'),
->>>>>>> laraxot/dev
             ],
             'permissions' => [
                 'INTERNET',
@@ -148,13 +126,8 @@ return [
             'build' => '1',
             'deployment_target' => '15.0',
             'signing' => [
-<<<<<<< HEAD
                 'team_id' => (getenv('IOS_TEAM_ID') ?: null),
                 'provisioning_profile' => (getenv('IOS_PROVISIONING_PROFILE') ?: null),
-=======
-                'team_id' => env('IOS_TEAM_ID'),
-                'provisioning_profile' => env('IOS_PROVISIONING_PROFILE'),
->>>>>>> laraxot/dev
             ],
             'capabilities' => [
                 'push_notifications' => true,
@@ -170,8 +143,4 @@ return [
             ],
         ],
     ],
-<<<<<<< HEAD
 ];
-=======
-];
->>>>>>> laraxot/dev

@@ -7,10 +7,7 @@ namespace Modules\Mobile\Database\Factories;
 use Modules\Mobile\Models\WaiterSession;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-<<<<<<< HEAD
 /** @extends Factory<WaiterSession> */
-=======
->>>>>>> laraxot/dev
 class WaiterSessionFactory extends Factory
 {
     protected $model = WaiterSession::class;
@@ -60,8 +57,4 @@ class WaiterSessionFactory extends Factory
             'platform' => 'android',
         ]);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> laraxot/dev

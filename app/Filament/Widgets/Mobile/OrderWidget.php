@@ -49,10 +49,6 @@ class OrderWidget extends Widget
 
     private function checkConnection(): bool
     {
-<<<<<<< HEAD
         return (bool) Cache::get('mobile_queue_sync_connection', false);
-=======
-        return Cache::get('mobile_queue_sync_connection', false);
->>>>>>> laraxot/dev
     }
 }
