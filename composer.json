@@ -1,0 +1,26 @@
+{
+    "name": "nwidart/mobile",
+    "description": "Mobile module for NativePHP waiter app",
+    "authors": [
+        {
+            "name": "Developer",
+            "email": "dev@example.com"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "nativephp/mobile": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Mobile\\": "app/",
+            "Modules\\Mobile\\Database\\Factories\\": "database/factories/",
+            "Modules\\Mobile\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\Mobile\\Tests\\": "tests/"
+        }
+    }
+}
