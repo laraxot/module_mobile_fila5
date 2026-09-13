@@ -4,11 +4,26 @@ declare(strict_types=1);
 
 namespace Modules\Mobile;
 
+<<<<<<< HEAD
+=======
+use NativePHP\Plugins\Camera\CameraPlugin;
+use NativePHP\Plugins\PushNotifications\PushNotificationsPlugin;
+use NativePHP\Plugins\Biometrics\BiometricsPlugin;
+use NativePHP\Plugins\Location\LocationPlugin;
+use NativePHP\Plugins\Haptics\HapticsPlugin;
+use NativePHP\Plugins\Sharing\SharingPlugin;
+use NativePHP\Plugins\DeepLinks\DeepLinksPlugin;
+use NativePHP\Plugins\SecureStorage\SecureStoragePlugin;
+use NativePHP\Plugins\Gallery\GalleryPlugin;
+use NativePHP\Plugins\Offline\OfflinePlugin;
+
+>>>>>>> laraxot/dev
 class MobilePluginRegistry
 {
     /**
      * Get all enabled NativePHP plugins for the waiter app.
      *
+<<<<<<< HEAD
      * @return list<class-string>
      */
     public static function getPlugins(): array
@@ -16,12 +31,33 @@ class MobilePluginRegistry
         // NativePHP plugins are optional dependencies; the host registers them
         // when the corresponding packages are installed.
         return [];
+=======
+     * @return array<class-string>
+     */
+    public static function getPlugins(): array
+    {
+        return [
+            CameraPlugin::class,
+            PushNotificationsPlugin::class,
+            BiometricsPlugin::class,
+            LocationPlugin::class,
+            HapticsPlugin::class,
+            SharingPlugin::class,
+            DeepLinksPlugin::class,
+            SecureStoragePlugin::class,
+            GalleryPlugin::class,
+            OfflinePlugin::class,
+        ];
+>>>>>>> laraxot/dev
     }
 
     /**
      * Get plugin configuration for the waiter app.
+<<<<<<< HEAD
      *
      * @return array<string, array<string, bool|string>>
+=======
+>>>>>>> laraxot/dev
      */
     public static function getPluginConfig(): array
     {
@@ -66,4 +102,8 @@ class MobilePluginRegistry
             ],
         ];
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> laraxot/dev

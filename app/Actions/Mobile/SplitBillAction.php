@@ -7,6 +7,11 @@ namespace Modules\Mobile\Actions\Mobile;
 use Illuminate\Support\Facades\DB;
 use Modules\Restaurant\Models\Order;
 use Modules\Restaurant\Models\Payment;
+<<<<<<< HEAD
+=======
+use Modules\Restaurant\Enums\PaymentMethodEnum;
+use Modules\Restaurant\Enums\OrderStatusEnum;
+>>>>>>> laraxot/dev
 use Spatie\QueueableAction\QueueableAction;
 
 /**
@@ -17,11 +22,14 @@ class SplitBillAction
 {
     use QueueableAction;
 
+<<<<<<< HEAD
     /**
      * @param list<array{amount?: float|int, notes?: string, item_ids?: list<int>}> $splits
      * @param list<string>|null $paymentMethods
      * @return list<Payment>
      */
+=======
+>>>>>>> laraxot/dev
     public function execute(
         int $orderId,
         string $splitType,
@@ -30,6 +38,7 @@ class SplitBillAction
     ): array {
         $order = Order::with(['items', 'table'])->findOrFail($orderId);
 
+<<<<<<< HEAD
         if ($order->status === 'paid') {
             throw new \InvalidArgumentException('Order already paid');
         }
@@ -39,6 +48,16 @@ class SplitBillAction
 
         /** @var list<Payment> $result */
         $result = DB::transaction(function () use ($order, $splitType, $splits, $paymentMethods, $totalAmount, &$results): array {
+=======
+        if ($order->status === OrderStatusEnum::PAID) {
+            throw new \InvalidArgumentException('Order already paid');
+        }
+
+        $totalAmount = $order->total_amount ?? $order->items->sum(fn($i) => $i->quantity * $i->unit_price);
+        $results = [];
+
+        return DB::transaction(function () use ($order, $splitType, $splits, $paymentMethods, $totalAmount, &$results) {
+>>>>>>> laraxot/dev
             switch ($splitType) {
                 case 'equal':
                     $count = count($splits);
@@ -47,7 +66,11 @@ class SplitBillAction
                         $payment = Payment::create([
                             'order_id' => $order->id,
                             'amount' => $amountPerPerson,
+<<<<<<< HEAD
                             'method' => $paymentMethods[$index] ?? 'cash',
+=======
+                            'method' => $paymentMethods[$index] ?? PaymentMethodEnum::CASH,
+>>>>>>> laraxot/dev
                             'notes' => $split['notes'] ?? ('Split '.($index + 1).'/'.$count),
                         ]);
                         $results[] = $payment;
@@ -62,8 +85,13 @@ class SplitBillAction
                     foreach ($splits as $index => $split) {
                         $payment = Payment::create([
                             'order_id' => $order->id,
+<<<<<<< HEAD
                             'amount' => $split['amount'] ?? 0,
                             'method' => $paymentMethods[$index] ?? 'cash',
+=======
+                            'amount' => $split['amount'],
+                            'method' => $paymentMethods[$index] ?? PaymentMethodEnum::CASH,
+>>>>>>> laraxot/dev
                             'notes' => $split['notes'] ?? ('Custom split '.($index + 1)),
                         ]);
                         $results[] = $payment;
@@ -73,7 +101,11 @@ class SplitBillAction
                 case 'items':
                     foreach ($splits as $index => $split) {
                         $amount = 0;
+<<<<<<< HEAD
                         foreach ($split['item_ids'] ?? [] as $itemId) {
+=======
+                        foreach ($split['item_ids'] as $itemId) {
+>>>>>>> laraxot/dev
                             $item = $order->items->firstWhere('id', $itemId);
                             if ($item) {
                                 $amount += $item->quantity * $item->unit_price;
@@ -82,7 +114,11 @@ class SplitBillAction
                         $payment = Payment::create([
                             'order_id' => $order->id,
                             'amount' => round($amount, 2),
+<<<<<<< HEAD
                             'method' => $paymentMethods[$index] ?? 'cash',
+=======
+                            'method' => $paymentMethods[$index] ?? PaymentMethodEnum::CASH,
+>>>>>>> laraxot/dev
                             'notes' => $split['notes'] ?? ('Items split '.($index + 1)),
                         ]);
                         $results[] = $payment;
@@ -96,12 +132,19 @@ class SplitBillAction
             // Check if fully paid
             $paidTotal = $order->payments->sum('amount');
             if ($paidTotal >= $totalAmount - 0.01) {
+<<<<<<< HEAD
                 $order->update(['status' => 'paid']);
+=======
+                $order->update(['status' => OrderStatusEnum::PAID]);
+>>>>>>> laraxot/dev
             }
 
             return $results;
         });
+<<<<<<< HEAD
 
         return $result;
+=======
+>>>>>>> laraxot/dev
     }
 }

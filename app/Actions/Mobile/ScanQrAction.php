@@ -4,10 +4,17 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Actions\Mobile;
 
+<<<<<<< HEAD
 use Modules\Restaurant\Models\DiningTable;
 use Modules\Restaurant\Models\Product;
 use Modules\Restaurant\Models\ProductCategory;
 use Modules\Restaurant\Models\ProductModifier;
+=======
+
+
+
+
+>>>>>>> laraxot/dev
 use Spatie\QueueableAction\QueueableAction;
 
 /**

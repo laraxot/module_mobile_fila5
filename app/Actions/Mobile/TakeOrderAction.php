@@ -10,6 +10,10 @@ use Modules\Mobile\Models\OrderQueue;
 use Modules\Restaurant\Models\Order;
 use Modules\Restaurant\Models\OrderItem;
 use Modules\Restaurant\Models\DiningTable;
+<<<<<<< HEAD
+=======
+use Modules\Restaurant\Enums\OrderStatusEnum;
+>>>>>>> laraxot/dev
 use Spatie\QueueableAction\QueueableAction;
 
 /**
@@ -20,10 +24,13 @@ class TakeOrderAction
 {
     use QueueableAction;
 
+<<<<<<< HEAD
     /**
      * @param list<array{product_id: int, quantity: int|float, unit_price: int|float, notes?: string|null, modifiers?: array<mixed>}> $items
      * @param array<string, mixed>|null $notes
      */
+=======
+>>>>>>> laraxot/dev
     public function execute(
         string $waiterSessionId,
         int $tableId,
@@ -39,7 +46,11 @@ class TakeOrderAction
             'user_id' => $session->user_id,
             'waiter_session_id' => $waiterSessionId,
             'shift_id' => $shiftId ?? $session->shift_id,
+<<<<<<< HEAD
             'status' => 'pending',
+=======
+            'status' => OrderStatusEnum::PENDING,
+>>>>>>> laraxot/dev
             'items' => $items,
             'notes' => $notes,
             'source' => 'mobile',
