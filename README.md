@@ -1,12 +1,21 @@
 ---
 id: module-mobile-readme
-title: Mobile — Esperienza Mobile per Operatori e Camerieri
+title: "Mobile — Esperienza Mobile per Operatori e Camerieri"
+type: module-readme
 category: module-documentation
-status: improved
-document_type: bmad_readme
-updated_at: '2026-09-13'
-tags: [mobile, bmad, second-brain, phpstan-10, filament-5]
-language: it-IT
+module: Mobile
+status: active
+tags: [mobile, nativephp, offline, sync, restaurant]
+created: 2026-09-14
+updated: 2026-09-14
+qmd: "mobile nativephp offline orders synchronization qr module documentation"
+issues:
+  - "https://github.com/laraxot/module_mobile_fila5/issues/1"
+discussions:
+  - "https://github.com/laraxot/module_mobile_fila5/discussions/2"
+related:
+  - "./docs/"
+sources: []
 ---
 
 # 📱 Mobile
