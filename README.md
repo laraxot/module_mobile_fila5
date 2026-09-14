@@ -1,32 +1,44 @@
-# Mobile
+# 📱 Mobile
 
-Modulo NativePHP Mobile per il ristorante.
+> **Esperienza mobile per operatori e camerieri.**
 
-## Obiettivo
-Permettere al cameriere di prendere ordini dal proprio smartphone/tablet con:
-- accesso rapido e autenticazione;
-- selezione tavolo/cliente;
-- presa ordine anche offline;
-- sync automatico quando la connessione ritorna;
-- invio ordine in cucina;
-- supporto a fotocamera/QR/barcode e notifiche push.
+App NativePHP per ordini offline, sync e comunicazione con Restaurant.
 
-## Dipendenze
-- NativePHP Mobile
+## Cosa offre
 
-Mobile espone il port `Modules\\Mobile\\Contracts\\RestaurantGateway` e
-consuma esclusivamente i DTO in `Modules\\Mobile\\Data`. L'adapter concreto
-è registrato dal modulo applicativo che possiede il dominio ristorante.
-Questo mantiene la direzione delle dipendenze: Restaurant può integrare
-Mobile, mentre Mobile resta riutilizzabile senza Restaurant.
+- **sessioni**
+- **ordini offline**
+- **QR e notifiche**
+- **contratti Restaurant**
 
-## Comandi
-```bash
-php artisan module:enable Mobile
-php artisan module:migrate Mobile
-php artisan mobile:sync
-```
+## Confini architetturali
+
+Questo modulo possiede le responsabilità elencate sopra e pubblica contratti riusabili agli altri moduli. La logica applicativa vive in Actions del modulo; l’interfaccia amministrativa segue le basi Laraxot/XotBase. Le dipendenze verso altri moduli devono restare esplicite e orientate verso contratti stabili.
+
+## Integrazione rapida
+
+Il modulo è caricato dall’architettura modulare Laraxot. Per verificarne lo stato:
+
+````bash
+cd laravel
+php artisan module:list
+./vendor/bin/phpstan analyse Modules/Mobile
+````
+
+Per i test e le convenzioni operative, consultare la documentazione locale prima di introdurre nuove integrazioni.
 
 ## Documentazione
-Vedi `docs/stories/` per le BMAD stories e `docs/wiki/` per l'integrazione tecnica.
-# module_mobile_fila5
+
+La mappa tecnica è in [docs/](./docs/).
+
+- [Story BMAD del modulo](./docs/stories/)
+- [Regole del progetto](../../../docs/wiki/)
+- [README del progetto](../../README.md)
+
+## Qualità e manutenzione
+
+Le modifiche devono mantenere `declare(strict_types=1);` nel codice PHP, rispettare PHPStan configurato dal progetto e aggiornare la documentazione tecnica quando cambiano contratti, dipendenze o flussi. Le story BMAD restano accanto al codice del modulo per conservare ownership e contesto.
+
+---
+
+**Modulo** `mobile` · **Laraxot** · **FixCity Platform**
