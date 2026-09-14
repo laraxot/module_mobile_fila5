@@ -1,3 +1,14 @@
+---
+id: module-mobile-readme
+title: Mobile — Esperienza Mobile per Operatori e Camerieri
+category: module-documentation
+status: improved
+document_type: bmad_readme
+updated_at: '2026-09-13'
+tags: [mobile, bmad, second-brain, phpstan-10, filament-5]
+language: it-IT
+---
+
 # 📱 Mobile
 
 > **Esperienza mobile per operatori e camerieri.**
@@ -6,30 +17,28 @@ App NativePHP per ordini offline, sync e comunicazione con Restaurant.
 
 ## Cosa offre
 
-- **sessioni**
-- **ordini offline**
-- **QR e notifiche**
-- **contratti Restaurant**
+- **Sessioni** – gestione dello stato dell'operatore
+- **Ordini offline** – completamento senza connessione
+- **QR e notifiche** – alert in tempo reale
+- **Contratti Restaurant** – integrazione con il modulo principale
 
 ## Confini architetturali
 
-Questo modulo possiede le responsabilità elencate sopra e pubblica contratti riusabili agli altri moduli. La logica applicativa vive in Actions del modulo; l’interfaccia amministrativa segue le basi Laraxot/XotBase. Le dipendenze verso altri moduli devono restare esplicite e orientate verso contratti stabili.
+This module publishes contracts usable by other modules. Logic lives in `Actions`; admin UI follows Laraxot/XotBase.
 
 ## Integrazione rapida
 
-Il modulo è caricato dall’architettura modulare Laraxot. Per verificarne lo stato:
-
-````bash
+```bash
 cd laravel
 php artisan module:list
 ./vendor/bin/phpstan analyse Modules/Mobile
-````
+```
 
-Per i test e le convenzioni operative, consultare la documentazione locale prima di introdurre nuove integrazioni.
+See local docs for integration patterns.
 
 ## Documentazione
 
-La mappa tecnica è in [docs/](./docs/).
+The technical map is in [docs/README.md](./docs/README.md).
 
 - [Story BMAD del modulo](./docs/stories/)
 - [Regole del progetto](../../../docs/wiki/)
@@ -37,8 +46,8 @@ La mappa tecnica è in [docs/](./docs/).
 
 ## Qualità e manutenzione
 
-Le modifiche devono mantenere `declare(strict_types=1);` nel codice PHP, rispettare PHPStan configurato dal progetto e aggiornare la documentazione tecnica quando cambiano contratti, dipendenze o flussi. Le story BMAD restano accanto al codice del modulo per conservare ownership e contesto.
+Keep `declare(strict_types=1);` in PHP, respect project PHPStan config, and update docs when contracts evolve.
 
 ---
 
-**Modulo** `mobile` · **Laraxot** · **FixCity Platform**
+**Modulo** `mobile` · **Laraxot ecosystem** · **Project-agnostic**
