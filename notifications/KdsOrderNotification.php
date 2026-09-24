@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-<<<<<<< HEAD
 /*
  * Bridge — file legacy, non autocaricato.
  *
@@ -19,30 +18,17 @@ declare(strict_types=1);
  */
 
 namespace Modules\Mobile\LegacyNotifications;
-=======
-namespace Modules\Mobile\Notifications;
->>>>>>> 07320e7 (docs: README.md con frontmatter YAML, link second brain e GitHub (bmad+second brain))
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
-<<<<<<< HEAD
-=======
-use Modules\Mobile\Models\WaiterSession;
->>>>>>> 07320e7 (docs: README.md con frontmatter YAML, link second brain e GitHub (bmad+second brain))
 
 class KdsOrderNotification extends Notification
 {
     use Queueable;
 
     /** @param array<string, mixed> $payload */
-<<<<<<< HEAD
     public function __construct(private readonly array $payload) {}
-=======
-    public function __construct(private readonly array $payload)
-    {
-    }
->>>>>>> 07320e7 (docs: README.md con frontmatter YAML, link second brain e GitHub (bmad+second brain))
 
     /** @return list<string> */
     public function via(object $notifiable): array
@@ -82,13 +68,7 @@ class KdsPushNotification extends Notification
     use Queueable;
 
     /** @param array<string, mixed> $payload */
-<<<<<<< HEAD
     public function __construct(private readonly array $payload) {}
-=======
-    public function __construct(private readonly array $payload)
-    {
-    }
->>>>>>> 07320e7 (docs: README.md con frontmatter YAML, link second brain e GitHub (bmad+second brain))
 
     /** @return list<string> */
     public function via(object $notifiable): array
@@ -102,13 +82,8 @@ class KdsPushNotification extends Notification
         return [
             'app_id' => config('mobile.onesignal_app_id'),
             'include_external_user_ids' => [$this->payload['waiter_id'] ?? ''],
-<<<<<<< HEAD
             'headings' => ['en' => 'New Order - Table '.$this->scalar($this->payload['table_number'] ?? null)],
             'contents' => ['en' => 'New order from Table '.$this->scalar($this->payload['table_number'] ?? null)],
-=======
-            'headings' => ['en' => 'New Order - Table ' . $this->scalar($this->payload['table_number'] ?? null)],
-            'contents' => ['en' => 'New order from Table ' . $this->scalar($this->payload['table_number'] ?? null)],
->>>>>>> 07320e7 (docs: README.md con frontmatter YAML, link second brain e GitHub (bmad+second brain))
             'data' => $this->payload,
         ];
     }
