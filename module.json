@@ -1,0 +1,12 @@
+{
+    "name": "Mobile",
+    "alias": "mobile",
+    "description": "Mobile module for NativePHP waiter app with order taking, floor plan, and kitchen integration",
+    "keywords": [],
+    "priority": 20,
+    "providers": [
+        "Modules\\Mobile\\Providers\\MobileServiceProvider"
+    ],
+    "files": [],
+    "active": 1
+}

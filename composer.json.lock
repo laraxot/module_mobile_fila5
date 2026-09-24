@@ -1,0 +1,6 @@
+LOCKED at 2026-09-13T14:59:36+02:00
+Task: mobile-composer-fix
+Agent: agent-dry
+Session: unknown
+PID: 3648170
+PID note: subshell di lock.sh, gia' terminato — NON usarlo per giudicare il lock stale, guarda 'LOCKED at'
