@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Actions\Mobile;
 
-use Modules\Restaurant\Models\DiningTable;
-use Modules\Restaurant\Models\Product;
-use Modules\Restaurant\Models\ProductCategory;
-use Modules\Restaurant\Models\ProductModifier;
 use Spatie\QueueableAction\QueueableAction;
 
 /**
@@ -44,7 +40,13 @@ class ScanQrAction
     private function handleProductQr(string $qrCode, ?string $waiterSessionId): array
     {
         $productId = (int) substr($qrCode, strlen('product:'));
-        $product = Product::with(['category', 'modifiers'])->find($productId);
+        // Mock product data for demo - in production would query OrderQueue or a Product model
+        $mockProducts = [
+            1 => ['name' => 'Caffè', 'description' => 'Espresso italiano', 'price' => 1.50, 'modifiers' => [], 'category' => 'Bevande'],
+            2 => ['name' => 'Pasta al Pomodoro', 'description' => 'Pasta fresca', 'price' => 8.00, 'modifiers' => [], 'category' => 'Primi'],
+        ];
+
+        $product = $mockProducts[$productId] ?? null;
 
         if (!$product) {
             return [
@@ -57,19 +59,13 @@ class ScanQrAction
             'success' => true,
             'type' => 'product',
             'data' => [
-                'id' => $product->id,
-                'name' => $product->name,
-                'description' => $product->description,
-                'price' => $product->price,
-                'category' => $product->category?->name,
-                'modifiers' => $product->modifiers->map(static function (ProductModifier $modifier): array {
-                    return [
-                        'id' => $modifier->id,
-                        'name' => $modifier->name,
-                        'price' => $modifier->price_delta,
-                    ];
-                }),
-                'allergens' => $product->allergens === null ? [] : array_map('trim', explode(',', $product->allergens)),
+                'id' => $productId,
+                'name' => $product['name'],
+                'description' => $product['description'],
+                'price' => $product['price'],
+                'category' => $product['category'],
+                'modifiers' => [],
+                'allergens' => [],
             ],
         ];
     }
@@ -78,7 +74,12 @@ class ScanQrAction
     private function handleCategoryQr(string $qrCode): array
     {
         $categoryId = (int) substr($qrCode, strlen('category:'));
-        $category = ProductCategory::with('products')->find($categoryId);
+        $mockCategories = [
+            1 => ['name' => 'Bevande', 'products' => [1 => ['name' => 'Caffè', 'price' => 1.50]]],
+            2 => ['name' => 'Primi', 'products' => [2 => ['name' => 'Pasta al Pomodoro', 'price' => 8.00]]],
+        ];
+
+        $category = $mockCategories[$categoryId] ?? null;
 
         if (!$category) {
             return [
@@ -91,15 +92,15 @@ class ScanQrAction
             'success' => true,
             'type' => 'category',
             'data' => [
-                'id' => $category->id,
-                'name' => $category->name,
-                'products' => $category->products->map(static function (Product $product): array {
+                'id' => $categoryId,
+                'name' => $category['name'],
+                'products' => array_map(function ($p) use ($category) {
                     return [
-                        'id' => $product->id,
-                        'name' => $product->name,
-                        'price' => $product->price,
+                        'id' => array_search($p, $category['products']),
+                        'name' => $p['name'],
+                        'price' => $p['price'],
                     ];
-                })->values(),
+                }, $category['products']),
             ],
         ];
     }
@@ -108,7 +109,13 @@ class ScanQrAction
     private function handleTableQr(string $qrCode): array
     {
         $tableId = (int) substr($qrCode, strlen('table:'));
-        $table = DiningTable::with('zone')->find($tableId);
+        // Mock table data for demo
+        $mockTables = [
+            1 => ['name' => 'Tavolo 1', 'seats' => 4, 'zone' => 'Centro'],
+            2 => ['name' => 'Tavolo 2', 'seats' => 2, 'zone' => 'Finestra'],
+        ];
+
+        $table = $mockTables[$tableId] ?? null;
 
         if (!$table) {
             return [
@@ -121,10 +128,10 @@ class ScanQrAction
             'success' => true,
             'type' => 'table',
             'data' => [
-                'id' => $table->id,
-                'name' => $table->name,
-                'capacity' => $table->seats,
-                'zone' => $table->zone?->name,
+                'id' => $tableId,
+                'name' => $table['name'],
+                'capacity' => $table['seats'],
+                'zone' => $table['zone'],
             ],
         ];
     }

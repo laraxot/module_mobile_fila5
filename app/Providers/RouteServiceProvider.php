@@ -16,7 +16,7 @@ class RouteServiceProvider extends XotBaseRouteServiceProvider
 {
     public string $name = 'Mobile';
 
-    protected string $moduleNamespace = 'Modules\Mobile\Http\Controllers';
+    protected string $moduleNamespace = 'Modules\Mobile\app\Http\Controllers';
 
     protected string $module_dir = __DIR__;
 

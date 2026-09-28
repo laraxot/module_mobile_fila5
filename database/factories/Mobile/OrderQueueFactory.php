@@ -1,13 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Modules\Mobile\Database\Factories;
 
-use Modules\Mobile\Models\OrderQueue;
-use Modules\Mobile\Database\Factories\WaiterSessionFactory;
-use Modules\Restaurant\Database\Factories\DiningTableFactory;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Modules\Mobile\Models\OrderQueue;
+use Modules\Mobile\Models\WaiterSession;
 
 /** @extends Factory<OrderQueue> */
 class OrderQueueFactory extends Factory
@@ -17,53 +14,17 @@ class OrderQueueFactory extends Factory
     public function definition(): array
     {
         return [
-            'waiter_session_id' => static function (): string {
-                return (new WaiterSessionFactory())->createOne()->id;
-            },
-            'table_id' => static function (): int {
-                return (new DiningTableFactory())->createOne()->id;
-            },
-            'order_data' => [
-                'items' => [
-                    [
-                        'product_id' => 1,
-                        'product_name' => 'Pizza Margherita',
-                        'quantity' => 2,
-                        'unit_price' => 12.5,
-                        'notes' => null,
-                    ],
-                ],
-                'total' => 25.0,
-            ],
+            'waiter_session_id' => static fn (): string => WaiterSession::query()
+                ->firstOrCreate(['device_id' => 'factory-device'])
+                ->id,
+            'table_id' => 1,
             'status' => OrderQueue::STATUS_PENDING,
+            'order_data' => ['items' => ['caffè', 'cornetto'], 'total' => 4.50],
             'sync_attempts' => 0,
-            'last_sync_at' => null,
-            'error_message' => null,
         ];
     }
 
-    public function pending(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => OrderQueue::STATUS_PENDING,
-        ]);
-    }
-
-    public function synced(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => OrderQueue::STATUS_SYNCED,
-            'sync_attempts' => 1,
-            'last_sync_at' => now(),
-        ]);
-    }
-
-    public function failed(): static
-    {
-        return $this->state(fn (array $attributes) => [
-            'status' => OrderQueue::STATUS_FAILED,
-            'sync_attempts' => 3,
-            'error_message' => 'Connection timeout',
-        ]);
-    }
+    public function pending(): static { return $this->state(['status' => OrderQueue::STATUS_PENDING]); }
+    public function synced(): static { return $this->state(['status' => OrderQueue::STATUS_SYNCED]); }
+    public function failed(): static { return $this->state(['status' => OrderQueue::STATUS_FAILED]); }
 }

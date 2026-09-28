@@ -5,44 +5,38 @@ declare(strict_types=1);
 namespace Modules\Mobile\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Restaurant\Models\DiningTable;
-use Modules\Restaurant\Models\Order;
+use Modules\Mobile\Models\OrderQueue;
+use Modules\Mobile\Models\WaiterSession;
+use function Safe\json_encode;
 
 class DemoDataSeeder extends Seeder
 {
     public function run(): void
     {
-        DiningTable::query()->delete();
-        Order::query()->delete();
-
-        DiningTable::query()->create([
-            'name' => 'Tavolo 1',
-            'code' => 'TAV-001',
-            'capacity' => 4,
-            'floor' => 1,
-            'status' => 'available',
+        // Create waiter sessions
+        $waiter1 = WaiterSession::create([
+            'device_name' => 'Marco Rossi', 'is_active' => true,
+            'platform' => 'android', 'token' => 'demo-marco',
         ]);
 
-        DiningTable::query()->create([
-            'name' => 'Tavolo 2',
-            'code' => 'TAV-002',
-            'capacity' => 4,
-            'floor' => 1,
-            'status' => 'available',
+        $waiter2 = WaiterSession::create([
+            'device_name' => 'Anna Verdi', 'is_active' => true,
+            'platform' => 'android', 'token' => 'demo-anna',
         ]);
 
-        DiningTable::query()->create([
-            'name' => 'Tavolo 3',
-            'code' => 'TAV-003',
-            'capacity' => 6,
-            'floor' => 1,
-            'status' => 'reserved',
+        // Create orders
+        OrderQueue::create([
+            'table_id' => 1,
+            'waiter_session_id' => $waiter1->id, 'status' => OrderQueue::STATUS_PENDING,
+            'order_data' => ['items' => [['name' => 'Caffè', 'quantity' => 1, 'price' => 1.50]], 'total' => 1.50],
+            'sync_attempts' => 0,
         ]);
 
-        Order::query()->create([
-            'table_id' => DiningTable::firstOrCreate(['name' => 'Tavolo 1'], ['zone_id' => 1, 'status' => 'available', 'is_active' => true])->id,
-            'status' => 'open',
-            'total' => 0,
+        OrderQueue::create([
+            'table_id' => 2,
+            'waiter_session_id' => $waiter2->id, 'status' => OrderQueue::STATUS_PENDING,
+            'order_data' => ['items' => [['name' => 'Pasta al Pomodoro', 'quantity' => 1, 'price' => 8.00]], 'total' => 8.00],
+            'sync_attempts' => 0,
         ]);
     }
 }

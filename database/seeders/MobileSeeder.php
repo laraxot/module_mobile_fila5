@@ -6,8 +6,8 @@ namespace Modules\Mobile\Database\Seeders;
 
 use Modules\Mobile\Models\WaiterSession;
 use Modules\Mobile\Models\OrderQueue;
-use Modules\Mobile\Database\Factories\WaiterSessionFactory;
 use Modules\Mobile\Database\Factories\OrderQueueFactory;
+use Modules\Mobile\Database\Factories\WaiterSessionFactory;
 use Illuminate\Database\Seeder;
 
 class MobileSeeder extends Seeder
