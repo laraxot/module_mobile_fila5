@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Mobile\App\Data;
+namespace Modules\Mobile\Data;
 
 /**
  * Mobile App Demo Data (Agnostic).

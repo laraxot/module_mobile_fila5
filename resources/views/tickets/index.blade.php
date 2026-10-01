@@ -1,4 +1,4 @@
-<x-mobile::layout>
+<x-layout.app>
     <div class="bg-white shadow-sm sticky top-0 z-10">
         <div class="max-w-lg mx-auto px-4 py-4">
             <h1 class="text-xl font-bold text-gray-900">Segnalazioni</h1>
@@ -25,4 +25,4 @@
             </template>
         </div>
     </div>
-</x-mobile::layout>
+</x-layout.app>
