@@ -1,62 +1,79 @@
----
-id: module-mobile-readme
-title: "Mobile — Esperienza Mobile per Operatori e Camerieri"
-type: module-readme
-category: module-documentation
-module: Mobile
-status: active
-tags: [mobile, nativephp, offline, sync, restaurant]
-created: 2026-09-14
-updated: 2026-09-14
-qmd: "mobile nativephp offline orders synchronization qr module documentation"
-issues:
-  - "https://github.com/laraxot/module_mobile_fila5/issues/1"
-discussions:
-  - "https://github.com/laraxot/module_mobile_fila5/discussions/2"
-related:
-  - "./docs/"
-sources: []
----
+# 📱 Mobile — agnostic NativePHP host module
 
-# 📱 Mobile
+## Contratto del modulo
 
-> **Esperienza mobile per operatori e camerieri.**
+## Descrizione
+Modulo mobile **NativePHP** riusabile per iOS/Android. Non contiene logica di dominio
+FixCity né presuppone ristorante, Comune o altro verticale: il progetto host registra
+le proprie schermate native e fornisce gli adapter tramite contratti.
 
-App NativePHP per ordini offline, sync e comunicazione con Restaurant.
+## Consumer FixCity
 
-## Cosa offre
+Il consumer FixCity usa il GeoJSON canonico `public_html/data/tickets.json` e le
+stesse policy/Actions del web. La schermata nativa iniziale è documentata in
+`Modules/Fixcity/docs/bmad/fixcity-nativephp-mobile.md`.
 
-- **Sessioni** – gestione dello stato dell'operatore
-- **Ordini offline** – completamento senza connessione
-- **QR e notifiche** – alert in tempo reale
-- **Contratti Restaurant** – integrazione con il modulo principale
+### 1. Cittadino non loggato
+- Visualizzazione mappa con segnalazioni (GeoJSON)
+- Invio segnalazione rapida (guest)
+- Dettaglio ticket
 
-## Confini architetturali
+### 2. Cittadino loggato
+- Track ticket in tempo reale
+- Storico segnalazioni
+- Notifiche push
+- Risposta PA
 
-This module publishes contracts usable by other modules. Logic lives in `Actions`; admin UI follows Laraxot/XotBase.
+### 3. Operatore di quartiere
+- Gestione ticket assegnati
+- Note interne
+- Aggiornamento stato
+- Geo-search
 
-## Integrazione rapida
+### 4. Amministrazione comunale
+- Dashboard PA completa
+- Statistiche e export
+- Configurazione moduli
+- Reportistica
 
+## Installazione
 ```bash
 cd laravel
-php artisan module:list
-./vendor/bin/phpstan analyse Modules/Mobile
+composer require nativephp/mobile
+# Genera lo shell Android NativePHP secondo la documentazione ufficiale
+php artisan native:install
+php artisan native:debug
 ```
 
-See local docs for integration patterns.
+L'APK debug verificato per questa demo è disponibile in
+`laravel/nativephp/android/app/build/outputs/apk/debug/app-debug.apk`.
+La firma release, iOS/macOS, push provider e store submission richiedono credenziali
+e ambienti esterni: non vengono simulati né inclusi nel modulo.
 
-## Documentazione
+## Architettura
+```
+Mobile/
+├── app/
+│   ├── Actions/       # Azioni business
+│   ├── Contracts/     # Interfacce
+│   ├── Models/        # Eloquent models
+│   └── Providers/         # Module registration; no front-office controllers
+├── resources/views/   # Blade (PWA-friendly)
+├── docs/             # Documentazione
+└── module.json       # Manifest
+```
 
-The technical map is in [docs/README.md](./docs/README.md).
+## Dipendenze
+- nativephp/mobile ^4.5
+- fixcity (core)
+- geo (mappa)
+- user (auth)
 
-- [Story BMAD del modulo](./docs/stories/)
-- [Regole del progetto](../../../docs/wiki/)
-- [README del progetto](../../README.md)
-
-## Qualità e manutenzione
-
-Keep `declare(strict_types=1);` in PHP, respect project PHPStan config, and update docs when contracts evolve.
-
----
-
-**Modulo** `mobile` · **Laraxot ecosystem** · **Project-agnostic**
+## Status verificato
+- ✅ modulo agnostico, senza controller FO, route file o seeders verticali
+- ✅ contratto gateway disponibile per il consumer di dominio
+- ✅ NativePHP Mobile 4.5.2 installato e shell Android generato
+- ✅ APK Android debug generato in `nativephp/android/app/build/outputs/apk/debug/app-debug.apk`
+- ⚠️ le schermate native FixCity sono un adapter consumer da completare dopo la
+  decisione del contratto di integrazione Folio/Volt; le pagine web restano nel modulo
+  owner e non vengono duplicate qui

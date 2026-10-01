@@ -5,27 +5,31 @@ declare(strict_types=1);
 namespace Modules\Mobile\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Modules\Restaurant\Models\Order;
-use Modules\Restaurant\Models\DiningTable;
+use Modules\Mobile\Models\OrderQueue;
+use Modules\Mobile\Models\WaiterSession;
+use function Safe\json_encode;
 
 class OrderSeeder extends Seeder
 {
     public function run(): void
     {
-        $table = DiningTable::firstOrCreate(['name' => 'Tavolo 1'], ['zone_id' => 1, 'status' => 'available', 'is_active' => true]);
+        $waiter = WaiterSession::firstOrCreate(
+            ['device_name' => 'Marco'],
+            ['is_active' => true, 'platform' => 'android', 'token' => 'demo-marco']
+        );
 
-        Order::query()->create([
-            'table_id' => $table->id,
-            'status' => 'open',
-            'waiter_id' => 1,
-            'total' => 0,
+        OrderQueue::query()->create([
+            'waiter_session_id' => $waiter->id,
+            'status' => OrderQueue::STATUS_PENDING,
+            'order_data' => json_encode(['items' => ['caffè', 'cornetto'], 'total' => 4.50]),
+            'sync_attempts' => 0,
         ]);
 
-        Order::query()->create([
-            'table_id' => $table->id,
-            'status' => 'sent_to_kitchen',
-            'waiter_id' => 1,
-            'total' => 45.50,
+        OrderQueue::query()->create([
+            'waiter_session_id' => $waiter->id,
+            'status' => OrderQueue::STATUS_PENDING,
+            'order_data' => json_encode(['items' => ['pasta al pomodoro'], 'total' => 12.00]),
+            'sync_attempts' => 0,
         ]);
     }
 }

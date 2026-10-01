@@ -49,12 +49,6 @@ class OrderQueue extends XotBaseModel
         return $this->belongsTo(WaiterSession::class, 'waiter_session_id');
     }
 
-    /** @return BelongsTo<\Modules\Restaurant\Models\DiningTable, $this> */
-    public function table(): BelongsTo
-    {
-        return $this->belongsTo(\Modules\Restaurant\Models\DiningTable::class, 'table_id');
-    }
-
     /**
      * @param Builder<self> $query
      * @return Builder<self>

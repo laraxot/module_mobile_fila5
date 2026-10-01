@@ -4,18 +4,21 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Providers;
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\ServiceProvider;
+use Modules\Xot\Providers\XotBaseRouteServiceProvider;
 
-class RouteServiceProvider extends ServiceProvider
+/**
+ * Mobile RouteServiceProvider — extends XotBaseRouteServiceProvider.
+ *
+ * @see BMAD STORY-410 · Issue #429 · Discussion #669
+ * @see XotBaseRouteServiceProvider: Modules\Xot\Providers\XotBaseRouteServiceProvider
+ */
+class RouteServiceProvider extends XotBaseRouteServiceProvider
 {
-    public function boot(): void
-    {
-        Route::middleware('api')
-            ->prefix('mobile')
-            ->group(__DIR__ . '/../../routes/api.php');
+    public string $name = 'Mobile';
 
-        Route::middleware('web')
-            ->group(__DIR__ . '/../../routes/web.php');
-    }
+    protected string $moduleNamespace = 'Modules\Mobile\app\Http\Controllers';
+
+    protected string $module_dir = __DIR__;
+
+    protected string $module_ns = __NAMESPACE__;
 }

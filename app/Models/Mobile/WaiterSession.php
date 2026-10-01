@@ -59,12 +59,6 @@ class WaiterSession extends XotBaseModel
         );
     }
 
-    /** @return BelongsTo<\Modules\Restaurant\Models\StaffShift, $this> */
-    public function shift(): BelongsTo
-    {
-        return $this->belongsTo(\Modules\Restaurant\Models\StaffShift::class, 'shift_id');
-    }
-
     /**
      * @param Builder<self> $query
      * @return Builder<self>

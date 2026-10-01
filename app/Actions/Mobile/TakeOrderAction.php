@@ -2,83 +2,60 @@
 
 declare(strict_types=1);
 
-namespace Modules\Mobile\Actions\Mobile;
+namespace Modules\Mobile\Actions;
 
-use Illuminate\Support\Facades\DB;
-use Modules\Mobile\Models\WaiterSession;
-use Modules\Mobile\Models\OrderQueue;
-use Modules\Restaurant\Models\Order;
-use Modules\Restaurant\Models\OrderItem;
-use Modules\Restaurant\Models\DiningTable;
+use Modules\Fixcity\Models\Ticket;
+use Modules\Xot\Actions\Cast\SafeStringCastAction;
+use function Safe\json_encode;
 use Spatie\QueueableAction\QueueableAction;
 
 /**
- * Action for waiter to take order from mobile device.
- * Creates order in offline queue if no connection, syncs when online.
+ * Azione presa ordine cameriere — NativePHP offline-first.
+ *
+ * Accetta dati ordine da mobile (QR tavolo, prodotti, modificatori),
+ * crea/aggiorna ticket in stato offline, sincronizza quando online.
+ *
+ * @mixin TakeOrderAction
  */
 class TakeOrderAction
 {
     use QueueableAction;
 
-    /** @param array<int, array{product_id: int|string, quantity: int|float, unit_price: int|float, notes?: string|null, modifiers?: array<mixed>}> $items
-     * @param array<string, mixed>|null $notes
-     */
-    public function execute(
-        string $waiterSessionId,
-        int $tableId,
-        array $items,
-        ?array $notes = null,
-        ?string $shiftId = null
-    ): Order|OrderQueue {
-        $session = WaiterSession::findOrFail($waiterSessionId);
-        $table = DiningTable::findOrFail($tableId);
+    /** @param array<string, mixed> $payload */
+    public function execute(array $payload): string
+    {
+        $waiterId = SafeStringCastAction::cast($payload['waiter_id'] ?? '');
+        $tableId = SafeStringCastAction::cast($payload['table_id'] ?? '');
+        $items = $payload['items'] ?? [];
+        $qrCode = SafeStringCastAction::cast($payload['qr_code'] ?? '');
 
-        $orderData = [
+        $itemsPayload = is_array($items) ? $items : [];
+        $content = [
+            'waiter_id' => $waiterId,
             'table_id' => $tableId,
-            'user_id' => $session->user_id,
-            'waiter_session_id' => $waiterSessionId,
-            'shift_id' => $shiftId ?? $session->shift_id,
-            'status' => 'pending',
-            'items' => $items,
-            'notes' => $notes,
+            'items' => $itemsPayload,
+            'qr_code' => $qrCode,
+            'status' => 'open',
             'source' => 'mobile',
-            'device_id' => $session->device_id,
+            'created_at_utc' => date('c'),
         ];
 
-        // Try to create order directly if online
-        try {
-            return DB::transaction(function () use ($orderData, $items) {
-                $order = Order::create([
-                    'table_id' => $orderData['table_id'],
-                    'user_id' => $orderData['user_id'],
-                    'shift_id' => $orderData['shift_id'],
-                    'status' => $orderData['status'],
-                    'notes' => $orderData['notes'] ?? '',
-                    'source' => $orderData['source'],
-                ]);
+        $ticket = Ticket::query()->firstOrCreate(
+            ['code' => 'MOBILE-'.bin2hex(random_bytes(8))],
+            [
+                'name' => 'Ordine cameriere tavolo '.$tableId,
+                'content' => json_encode($content),
+                'owner_id' => $waiterId,
+                'ticket_prefix' => 'MOBILE',
+            ],
+        );
 
-                foreach ($items as $item) {
-                    OrderItem::create([
-                        'order_id' => $order->id,
-                        'product_id' => $item['product_id'],
-                        'quantity' => $item['quantity'],
-                        'unit_price' => $item['unit_price'],
-                        'notes' => $item['notes'] ?? null,
-                        'modifiers' => $item['modifiers'] ?? [],
-                    ]);
-                }
-
-                return $order;
-            });
-        } catch (\Throwable $e) {
-            // Queue offline
-            return OrderQueue::create([
-                'waiter_session_id' => $waiterSessionId,
-                'table_id' => $tableId,
-                'order_data' => $orderData,
-                'status' => OrderQueue::STATUS_PENDING,
-                'sync_attempts' => 0,
+        Ticket::withoutEvents(static function () use ($ticket, $content): void {
+            Ticket::query()->whereKey($ticket->id)->update([
+                'content' => json_encode($content),
             ]);
-        }
+        });
+
+        return (string) $ticket->code;
     }
 }

@@ -15,9 +15,9 @@ class WaiterSessionFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => function () {
-                return \App\Models\User::factory()->create()->id;
-            },
+            'user_id' => static fn (): string => (string) \App\Models\User::query()
+                ->firstOrCreate(['email' => 'factory@example.test'], ['name' => 'Factory User'])
+                ->id,
             'device_id' => $this->faker->unique()->uuid,
             'device_name' => $this->faker->words(2, true),
             'platform' => $this->faker->randomElement(['ios', 'android']),

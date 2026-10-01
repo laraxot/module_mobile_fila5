@@ -1,14 +1,14 @@
 <?php
 
 return [
-    'app_name' => (getenv('NATIVEPHP_APP_NAME') ?: 'Sottana Waiter'),
+    'app_name' => (getenv('NATIVEPHP_APP_NAME') ?: 'NativePHP App'),
     'version' => (getenv('NATIVEPHP_APP_VERSION') ?: '1.0.0'),
-    'description' => 'Native mobile app for waiters to take orders and manage restaurant floor plans',
-    'identifier' => 'com.sottana.waiter',
+    'description' => 'A reusable NativePHP mobile shell for a Laravel module',
+    'identifier' => (getenv('NATIVEPHP_APP_ID') ?: 'com.example.nativephpapp'),
     'window' => [
         'width' => 390,
         'height' => 844,
-        'title' => 'Sottana Waiter',
+        'title' => (getenv('NATIVEPHP_APP_NAME') ?: 'NativePHP App'),
         'resizable' => false,
         'maximizable' => false,
         'fullscreenable' => false,
@@ -97,7 +97,7 @@ return [
     ],
     'build' => [
         'android' => [
-            'package' => 'com.sottana.waiter',
+            'package' => (getenv('NATIVEPHP_APP_ID') ?: 'com.example.nativephpapp'),
             'version_code' => 1,
             'version_name' => '1.0.0',
             'min_sdk' => 24,
@@ -121,7 +121,7 @@ return [
             ],
         ],
         'ios' => [
-            'bundle_id' => 'com.sottana.waiter',
+            'bundle_id' => (getenv('NATIVEPHP_APP_ID') ?: 'com.example.nativephpapp'),
             'version' => '1.0.0',
             'build' => '1',
             'deployment_target' => '15.0',

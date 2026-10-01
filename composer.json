@@ -1,25 +1,25 @@
 {
-    "name": "nwidart/mobile",
-    "description": "Mobile module for NativePHP waiter app",
-    "authors": [
-        {
-            "name": "Developer",
-            "email": "dev@example.com"
-        }
-    ],
+    "name": "fixcity/mobile",
+    "description": "NativePHP for Mobile — iOS and Android apps built with Laravel",
+    "type": "library",
+    "license": "MIT",
     "require": {
-        "nativephp/mobile": "*"
+        "php": "^8.4",
+        "nativephp/mobile": "^4.5",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {
-            "Modules\\Mobile\\": "app/",
-            "Modules\\Mobile\\Database\\Factories\\": "database/factories/",
-            "Modules\\Mobile\\Database\\Seeders\\": "database/seeders/"
+            "Modules\\Mobile\\": "app/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Modules\\Mobile\\Tests\\": "tests/"
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\Mobile\\Providers\\MobileServiceProvider"
+            ]
         }
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }
