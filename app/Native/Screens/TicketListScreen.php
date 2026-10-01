@@ -4,15 +4,33 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Native\Screens;
 
-use Native\Mobile\Edge\Components\Native\NativeComponent;
-use Native\Mobile\Edge\NativeComponent as EdgeNativeComponent;
+use Illuminate\View\View;
+use Native\Mobile\Edge\NativeComponent;
 
+/**
+ * @phpstan-type TicketSummary array{
+ *     id: string,
+ *     title: string,
+ *     type: string,
+ *     type_label: string,
+ *     status: string,
+ *     status_label: string,
+ *     city: string,
+ *     address: string,
+ *     created_at: string,
+ *     updated_at: string,
+ *     photo: ?string
+ * }
+ * @phpstan-type ListFilters array{status: string, search: string, type: string}
+ */
 class TicketListScreen extends NativeComponent
 {
     public string $title = 'Le Mie Segnalazioni';
 
+    /** @var list<TicketSummary> */
     public array $tickets = [];
 
+    /** @var ListFilters */
     public array $filters = [
         'status' => 'all',
         'search' => '',
@@ -55,13 +73,14 @@ class TicketListScreen extends NativeComponent
 
     public function loadMore(): void
     {
-        if ($this->hasMore && !$this->isLoading) {
+        if ($this->hasMore && ! $this->isLoading) {
             $this->currentPage++;
             $this->loadTickets();
         }
     }
 
-    public function applyFilter(string $filter, mixed $value): void
+    /** @param 'status'|'search'|'type' $filter */
+    public function applyFilter(string $filter, string $value): void
     {
         $this->filters[$filter] = $value;
         $this->currentPage = 1;
@@ -81,14 +100,15 @@ class TicketListScreen extends NativeComponent
 
     public function navigateToDetail(string $ticketId): void
     {
-        $this->navigateTo('ticket-detail', ['ticketId' => $ticketId]);
+        $this->navigate('ticket-detail', ['ticketId' => $ticketId]);
     }
 
     public function navigateToCreate(): void
     {
-        $this->navigateTo('create-ticket');
+        $this->navigate('create-ticket');
     }
 
+    /** @return list<TicketSummary> */
     private function getDemoTickets(): array
     {
         return [
@@ -160,9 +180,12 @@ class TicketListScreen extends NativeComponent
         ];
     }
 
-    public function render(): EdgeNativeComponent
+    public function render(): View
     {
-        return view('mobile::native.screens.ticket-list', [
+        /** @phpstan-var view-string $view */
+        $view = 'mobile::native.screens.ticket-list';
+
+        return view($view, [
             'title' => $this->title,
             'tickets' => $this->tickets,
             'filters' => $this->filters,

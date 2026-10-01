@@ -4,15 +4,44 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Native\Screens;
 
-use Native\Mobile\Edge\Components\Native\NativeComponent;
-use Native\Mobile\Edge\NativeComponent as EdgeNativeComponent;
+use Illuminate\View\View;
+use Native\Mobile\Edge\NativeComponent;
 
+/**
+ * @phpstan-type TicketData array{
+ *     id: string,
+ *     title: string,
+ *     type: string,
+ *     type_label: string,
+ *     type_icon: string,
+ *     status: string,
+ *     status_label: string,
+ *     status_color: string,
+ *     city: string,
+ *     address: string,
+ *     description: string,
+ *     location: array{lat: float, lng: float}|null,
+ *     created_at: string,
+ *     updated_at: string,
+ *     photos: list<string>,
+ *     reporter_name?: string,
+ *     reporter_phone?: string,
+ *     assigned_department?: string,
+ *     assigned_operator?: string,
+ *     sla_deadline?: string,
+ *     priority?: string,
+ *     resolution?: string
+ * }
+ * @phpstan-type TimelineEntry array{action: string, label: string, user: string, timestamp: string}
+ */
 class TicketDetailScreen extends NativeComponent
 {
     public string $ticketId = '';
 
+    /** @var TicketData */
     public array $ticket = [];
 
+    /** @var list<TimelineEntry> */
     public array $timeline = [];
 
     public bool $isLoading = true;
@@ -23,9 +52,14 @@ class TicketDetailScreen extends NativeComponent
 
     public bool $isSubscribed = false;
 
-    public function mount(array $params = []): void
+    /**
+     * NativeComponent::mountComponent() risolve i parametri di montaggio per
+     * NOME dal route (routeParameterFor), mai come array: un parametro
+     * `array $params` riceverebbe sempre il valore di default.
+     */
+    public function mount(?string $ticketId = null): void
     {
-        $this->ticketId = $params['ticketId'] ?? '';
+        $this->ticketId = $ticketId ?? '';
         $this->loadTicket();
     }
 
@@ -44,8 +78,9 @@ class TicketDetailScreen extends NativeComponent
 
     public function subscribe(): void
     {
-        if (!auth()->check()) {
-            $this->navigateTo('login', ['redirect' => 'ticket-detail', 'ticketId' => $this->ticketId]);
+        if (! auth()->check()) {
+            $this->navigate('login', ['redirect' => 'ticket-detail', 'ticketId' => $this->ticketId]);
+
             return;
         }
 
@@ -62,8 +97,9 @@ class TicketDetailScreen extends NativeComponent
 
     public function updateStatus(string $newStatus): void
     {
-        if (!$this->canUpdate) {
+        if (! $this->canUpdate) {
             $this->showToast('Non hai i permessi per aggiornare lo stato', 'error');
+
             return;
         }
 
@@ -73,7 +109,7 @@ class TicketDetailScreen extends NativeComponent
         $this->timeline[] = [
             'action' => 'status_changed',
             'label' => 'Stato aggiornato a ' . $this->getStatusLabel($newStatus),
-            'user' => auth()->user()->name ?? 'Operatore',
+            'user' => auth()->user()?->name ?? 'Operatore',
             'timestamp' => now()->toISOString(),
         ];
         $this->showToast('Stato aggiornato');
@@ -81,14 +117,14 @@ class TicketDetailScreen extends NativeComponent
 
     public function addInternalNote(string $note): void
     {
-        if (!$this->canUpdate) {
+        if (! $this->canUpdate) {
             return;
         }
 
         $this->timeline[] = [
             'action' => 'internal_note',
             'label' => 'Nota interna: ' . $note,
-            'user' => auth()->user()->name ?? 'Operatore',
+            'user' => auth()->user()?->name ?? 'Operatore',
             'timestamp' => now()->toISOString(),
         ];
         $this->showToast('Nota aggiunta');
@@ -98,21 +134,24 @@ class TicketDetailScreen extends NativeComponent
     {
         $url = url('/tickets/' . $this->ticketId);
         $this->share([
-            'title' => $this->ticket['title'] ?? 'Segnalazione FixCity',
-            'text' => 'Guarda questa segnalazione: ' . ($this->ticket['title'] ?? ''),
+            'title' => $this->ticket['title'],
+            'text' => 'Guarda questa segnalazione: ' . $this->ticket['title'],
             'url' => $url,
         ]);
     }
 
     public function navigateToMap(): void
     {
-        if (isset($this->ticket['location'])) {
-            $this->navigateTo('map', [
-                'focus' => $this->ticket['location'],
-            ]);
+        $location = $this->ticket['location'];
+
+        if ($location === null) {
+            return;
         }
+
+        $this->navigate('map', ['focus' => $location]);
     }
 
+    /** @return TicketData */
     private function getDemoTicket(string $id): array
     {
         $tickets = [
@@ -207,6 +246,7 @@ class TicketDetailScreen extends NativeComponent
         ];
     }
 
+    /** @return list<TimelineEntry> */
     private function getDemoTimeline(string $id): array
     {
         $timelines = [
@@ -237,7 +277,7 @@ class TicketDetailScreen extends NativeComponent
     {
         // Logica: operatori di quartiere e admin possono aggiornare
         $user = auth()->user();
-        if (!$user) {
+        if (! $user) {
             return false;
         }
 
@@ -266,14 +306,18 @@ class TicketDetailScreen extends NativeComponent
         // In produzione: usa bridge function per toast nativo
     }
 
+    /** @param array{title: string, text: string, url: string} $data */
     private function share(array $data): void
     {
         // In produzione: usa bridge function per share nativo
     }
 
-    public function render(): EdgeNativeComponent
+    public function render(): View
     {
-        return view('mobile::native.screens.ticket-detail', [
+        /** @phpstan-var view-string $view */
+        $view = 'mobile::native.screens.ticket-detail';
+
+        return view($view, [
             'ticket' => $this->ticket,
             'timeline' => $this->timeline,
             'isLoading' => $this->isLoading,
