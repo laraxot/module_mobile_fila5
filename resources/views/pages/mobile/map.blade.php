@@ -1,4 +1,4 @@
-<x-mobile::layout>
+<x-layout.app>
     <x-slot:title>Mappa — FixCity</x-slot:title>
     <x-ui.marketing.page-header
         title="🗺️ Mappa Segnalazioni"
@@ -121,4 +121,4 @@
                 document.getElementById('map').innerHTML = '<div style="padding:40px;text-align:center;color:#d32f2f;">Errore nel caricamento della mappa. <a href="/data/tickets.json">Scarica GeoJSON</a></div>';
             });
     </script>
-</x-mobile::layout>
+</x-layout.app>

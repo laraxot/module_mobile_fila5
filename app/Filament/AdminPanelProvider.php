@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Modules\Mobile\Filament;
 
 use Filament\Panel;
-use Modules\Xot\Filament\XotBasePanelProvider;
 use Filament\Support\Colors\Color;
+use Modules\Xot\Providers\Filament\XotBasePanelProvider;
 
 class AdminPanelProvider extends XotBasePanelProvider
 {
+    protected string $module = 'Mobile';
+
     public function panel(Panel $panel): Panel
     {
         return $panel
