@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Modules\Mobile\Actions\Mobile;
 
 use Illuminate\Support\Facades\Notification;
-use Modules\Restaurant\Models\Order;
-use Modules\Restaurant\Models\OrderItem;
+use Modules\Mobile\Models\OrderQueue;
 use Spatie\QueueableAction\QueueableAction;
 
 /**
@@ -19,25 +18,29 @@ class KdsNotificationAction
 
     public function execute(int $orderId, bool $isNewOrder = true): void
     {
-        $order = Order::with(['items.product', 'table'])->findOrFail($orderId);
+        $order = OrderQueue::findOrFail($orderId);
+
+        $items = $order->order_data['items'] ?? [];
+        $items = is_array($items) ? $items : [];
 
         $payload = [
             'order_id' => $order->id,
-            'table_number' => $order->table?->getAttribute('number') ?? $order->table?->getAttribute('name'),
-            'table_name' => $order->table?->getAttribute('name'),
-            'waiter_name' => 'Unknown',
-            'items' => $order->items->map(function (OrderItem $item) {
+            'table_number' => '1',  // Simplified for demo
+            'table_name' => 'Tavolo 1',
+            'waiter_name' => 'Operatore Demo',
+            'items' => array_map(static function (mixed $item): array {
+                $item = is_array($item) ? $item : [];
                 return [
-                    'id' => $item->id,
-                    'product_name' => $item->product->name ?? 'Unknown',
-                    'quantity' => $item->quantity,
-                    'notes' => $item->notes,
-                    'modifiers' => $item->modifiers ?? [],
-                    'status' => $item->kitchen_status ?? 'pending',
-                    'course' => $item->product->course ?? 'main',
+                    'id' => $item['id'] ?? uniqid(),
+                    'product_name' => $item['name'] ?? 'Prodotto Demo',
+                    'quantity' => $item['quantity'] ?? 1,
+                    'notes' => $item['notes'] ?? '',
+                    'modifiers' => $item['modifiers'] ?? [],
+                    'status' => $item['status'] ?? 'pending',
+                    'course' => $item['course'] ?? 'main',
                 ];
-            })->values(),
-            'notes' => is_scalar($order->getAttribute('notes')) ? (string) $order->getAttribute('notes') : '',
+            }, $items),
+            'notes' => is_string($order->order_data['notes'] ?? null) ? $order->order_data['notes'] : '',
             'priority' => $this->calculatePriority($order),
             'timestamp' => now()->toISOString(),
             'type' => $isNewOrder ? 'new_order' : 'update',
@@ -54,29 +57,23 @@ class KdsNotificationAction
         );
     }
 
-    private function calculatePriority(Order $order): int
+    private function calculatePriority(OrderQueue $order): int
     {
         $priority = 0;
-        $items = $order->items;
+        $items = $order->order_data['items'] ?? [];
+        $items = is_array($items) ? $items : [];
 
         // Rush orders get higher priority
-        $rawNotes = $order->getAttribute('notes');
-        $notes = is_scalar($rawNotes) ? (string) $rawNotes : '';
-        if ($notes !== '' && stripos($notes, 'rush') !== false) {
+        $notes = is_string($order->order_data['notes'] ?? null) ? $order->order_data['notes'] : '';
+        if (stripos($notes, 'rush') !== false) {
             $priority += 100;
         }
 
-        // Courses: appetizers first, then mains, then desserts
-        $hasAppetizer = $items->contains(fn($i) => ($i->product->course ?? '') === 'appetizer');
-        $hasMain = $items->contains(fn($i) => ($i->product->course ?? '') === 'main');
-
-        if ($hasAppetizer) $priority += 50;
-        if ($hasMain) $priority += 10;
-
-        // Large parties higher priority
-        $capacity = $order->table?->getAttribute('capacity');
-        if (is_numeric($capacity) && (int) $capacity >= 6) {
-            $priority += 20;
+        // Simple priority based on item count
+        if (count($items) > 3) {
+            $priority += 30;
+        } elseif (count($items) > 1) {
+            $priority += 15;
         }
 
         return $priority;

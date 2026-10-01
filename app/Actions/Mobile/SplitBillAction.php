@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Modules\Mobile\Actions\Mobile;
 
 use Illuminate\Support\Facades\DB;
-use Modules\Restaurant\Models\Order;
-use Modules\Restaurant\Models\Payment;
+use Modules\Mobile\Models\OrderQueue;
 use Spatie\QueueableAction\QueueableAction;
 
 /**
@@ -20,7 +19,7 @@ class SplitBillAction
     /**
      * @param array<int, array{notes?: string, amount?: float|int, item_ids?: array<int, int>}> $splits
      * @param array<int, string>|null $paymentMethods
-     * @return array<int, Payment>
+     * @return array<int, array<string, mixed>>
      */
     public function execute(
         int $orderId,
@@ -28,28 +27,30 @@ class SplitBillAction
         array $splits,
         ?array $paymentMethods = null
     ): array {
-        $order = Order::with(['items', 'table'])->findOrFail($orderId);
+        $order = OrderQueue::query()->findOrFail($orderId);
 
-        if ($order->status === 'paid') {
+        if ($order->getAttribute('status') === 'paid') {
             throw new \InvalidArgumentException('Order already paid');
         }
 
-        $rawTotal = $order->getAttribute('total_amount');
-        $totalAmount = is_numeric($rawTotal) ? (float) $rawTotal : (float) $order->items->sum(static fn ($i): float => (float) $i->quantity * (float) $i->unit_price);
+        $orderData = $order->order_data;
+        $rawTotal = $orderData['total'] ?? 0;
+        $totalAmount = is_numeric($rawTotal) ? (float) $rawTotal : 0.0;
         $results = [];
 
-        return DB::transaction(function () use ($order, $splitType, $splits, $paymentMethods, $totalAmount, &$results) {
+        /** @var array<int, array<string, mixed>> $result */
+        $result = DB::transaction(function () use ($order, $orderData, $splitType, $splits, $paymentMethods, $totalAmount, &$results): array {
             switch ($splitType) {
                 case 'equal':
                     $count = max(1, count($splits));
                     $amountPerPerson = round((float) $totalAmount / $count, 2);
                     foreach ($splits as $index => $split) {
-                        $payment = Payment::create([
+                        $payment = [
                             'order_id' => $order->id,
                             'amount' => $amountPerPerson,
                             'method' => $paymentMethods[$index] ?? 'cash',
                             'notes' => $split['notes'] ?? ('Split '.($index + 1).'/'.$count),
-                        ]);
+                        ];
                         $results[] = $payment;
                     }
                     break;
@@ -60,12 +61,12 @@ class SplitBillAction
                         throw new \InvalidArgumentException('Split amounts do not match total');
                     }
                     foreach ($splits as $index => $split) {
-                        $payment = Payment::create([
+                        $payment = [
                             'order_id' => $order->id,
                             'amount' => (float) ($split['amount'] ?? 0),
                             'method' => $paymentMethods[$index] ?? 'cash',
                             'notes' => $split['notes'] ?? ('Custom split '.($index + 1)),
-                        ]);
+                        ];
                         $results[] = $payment;
                     }
                     break;
@@ -74,17 +75,28 @@ class SplitBillAction
                     foreach ($splits as $index => $split) {
                         $amount = 0;
                         foreach (($split['item_ids'] ?? []) as $itemId) {
-                            $item = $order->items->firstWhere('id', $itemId);
-                            if ($item) {
-                                $amount += (float) $item->quantity * (float) $item->unit_price;
+                            $items = $orderData['items'] ?? [];
+                            $items = is_array($items) ? $items : [];
+                            $item = null;
+                            foreach ($items as $candidate) {
+                                if (is_array($candidate) && ($candidate['id'] ?? null) === $itemId) {
+                                    $item = $candidate;
+                                    break;
+                                }
+                            }
+                            if (is_array($item)) {
+                                $quantity = $item['quantity'] ?? 0;
+                                $unitPrice = $item['unit_price'] ?? $item['price'] ?? 0;
+                                $amount += (is_numeric($quantity) ? (float) $quantity : 0.0)
+                                    * (is_numeric($unitPrice) ? (float) $unitPrice : 0.0);
                             }
                         }
-                        $payment = Payment::create([
+                        $payment = [
                             'order_id' => $order->id,
                             'amount' => round($amount, 2),
                             'method' => $paymentMethods[$index] ?? 'cash',
                             'notes' => $split['notes'] ?? ('Items split '.($index + 1)),
-                        ]);
+                        ];
                         $results[] = $payment;
                     }
                     break;
@@ -94,13 +106,11 @@ class SplitBillAction
             }
 
             // Check if fully paid
-            $paidTotal = $order->payments->sum('amount');
-            if (is_numeric($paidTotal) && (float) $paidTotal >= $totalAmount - 0.01) {
-                $order->update(['status' => 'paid']);
-            }
+            $order->update(['order_data' => [...$orderData, 'splits' => $results]]);
 
-            /** @var array<int, Payment> $results */
             return $results;
         });
+
+        return $result;
     }
 }
