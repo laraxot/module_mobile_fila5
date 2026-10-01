@@ -1,4 +1,4 @@
-<x-layout.app>
+<x-layouts.app>
     <x-slot:title>FixCity Mobile</x-slot:title>
     <x-ui.marketing.page-header
         title="FixCity Mobile"
@@ -8,4 +8,4 @@
         <a href="{{ route('mobile.map') }}">📍 Mappa</a><br>
         <a href="{{ route('mobile.create') }}">✏️ Segnala</a>
     </div>
-</x-layout.app>
+</x-layouts.app>

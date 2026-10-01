@@ -1,4 +1,4 @@
-<x-layout.app>
+<x-layouts.app>
     <div class="bg-white shadow-sm sticky top-0 z-10">
         <div class="max-w-lg mx-auto px-4 py-4">
             <a href="/mobile" class="text-blue-600 text-sm">← Home</a>
@@ -53,4 +53,4 @@
             <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg text-sm">Invia segnalazione</button>
         </form>
     </div>
-</x-layout.app>
+</x-layouts.app>

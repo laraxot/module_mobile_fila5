@@ -1,4 +1,4 @@
-<x-layout.app>
+<x-layouts.app>
     <div class="bg-white shadow-sm sticky top-0 z-10">
         <div class="max-w-lg mx-auto px-4 py-4">
             <h1 class="text-xl font-bold text-gray-900">Menu</h1>
@@ -17,4 +17,4 @@
             Menu non ancora disponibile offline.
         </div>
     </div>
-</x-layout.app>
+</x-layouts.app>

@@ -1,4 +1,4 @@
-<x-layout.app>
+<x-layouts.app>
     <div class="bg-white shadow-sm">
         <div class="max-w-lg mx-auto px-4 py-6">
             <h1 class="text-2xl font-bold text-gray-900">FixCity</h1>
@@ -39,4 +39,4 @@
             </template>
         </div>
     </div>
-</x-layout.app>
+</x-layouts.app>
