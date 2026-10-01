@@ -39,7 +39,7 @@ class TicketDetailScreen extends NativeComponent
     public string $ticketId = '';
 
     /** @var TicketData */
-    public array $ticket = [];
+    public array $ticket;
 
     /** @var list<TimelineEntry> */
     public array $timeline = [];
@@ -109,8 +109,8 @@ class TicketDetailScreen extends NativeComponent
         $this->timeline[] = [
             'action' => 'status_changed',
             'label' => 'Stato aggiornato a ' . $this->getStatusLabel($newStatus),
-            'user' => auth()->user()?->name ?? 'Operatore',
-            'timestamp' => now()->toISOString(),
+            'user' => auth()->user()->name ?? 'Operatore',
+            'timestamp' => now()->toIso8601String(),
         ];
         $this->showToast('Stato aggiornato');
     }
@@ -124,8 +124,8 @@ class TicketDetailScreen extends NativeComponent
         $this->timeline[] = [
             'action' => 'internal_note',
             'label' => 'Nota interna: ' . $note,
-            'user' => auth()->user()?->name ?? 'Operatore',
-            'timestamp' => now()->toISOString(),
+            'user' => auth()->user()->name ?? 'Operatore',
+            'timestamp' => now()->toIso8601String(),
         ];
         $this->showToast('Nota aggiunta');
     }
@@ -240,8 +240,8 @@ class TicketDetailScreen extends NativeComponent
             'address' => '',
             'description' => '',
             'location' => null,
-            'created_at' => now()->toISOString(),
-            'updated_at' => now()->toISOString(),
+            'created_at' => now()->toIso8601String(),
+            'updated_at' => now()->toIso8601String(),
             'photos' => [],
         ];
     }
@@ -269,7 +269,7 @@ class TicketDetailScreen extends NativeComponent
         ];
 
         return $timelines[$id] ?? [
-            ['action' => 'created', 'label' => 'Segnalazione creata', 'user' => 'Sistema', 'timestamp' => now()->toISOString()],
+            ['action' => 'created', 'label' => 'Segnalazione creata', 'user' => 'Sistema', 'timestamp' => now()->toIso8601String()],
         ];
     }
 
