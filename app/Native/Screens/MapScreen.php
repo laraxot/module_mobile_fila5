@@ -8,7 +8,11 @@ use Illuminate\View\View;
 use Native\Mobile\Edge\NativeComponent;
 
 /**
- * @phpstan-type MapFilters array{types: list<string>, statuses: list<string>, date_range: ?string}
+ * @phpstan-type MapFilters array{
+ *     types: list<string>,
+ *     statuses: list<string>,
+ *     date_range: ?string
+ * }
  */
 class MapScreen extends NativeComponent
 {
