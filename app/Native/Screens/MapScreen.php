@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Native\Screens;
 
-use Native\Mobile\Edge\Components\Native\NativeComponent;
-use Native\Mobile\Edge\NativeComponent as EdgeNativeComponent;
+use Illuminate\View\View;
+use Native\Mobile\Edge\NativeComponent;
 
 class MapScreen extends NativeComponent
 {
     public string $title = 'Mappa Segnalazioni';
 
+    /** @var array<string, mixed> */
     public array $filters = [
         'types' => [],
         'statuses' => [],
@@ -40,6 +41,7 @@ class MapScreen extends NativeComponent
         $this->isLoading = false;
     }
 
+    /** @param array<string, mixed> $filters */
     public function applyFilters(array $filters): void
     {
         $this->filters = array_merge($this->filters, $filters);
@@ -56,9 +58,12 @@ class MapScreen extends NativeComponent
         $this->loadMarkers();
     }
 
-    public function render(): EdgeNativeComponent
+    public function render(): View
     {
-        return view('mobile::native.screens.map', [
+        /** @var view-string $view */
+        $view = 'mobile::native.screens.map';
+
+        return view($view, [
             'title' => $this->title,
             'markerCount' => $this->markerCount,
             'isLoading' => $this->isLoading,

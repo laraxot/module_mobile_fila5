@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Native\Screens;
 
-use Native\Mobile\Edge\Components\Native\NativeComponent;
-use Native\Mobile\Edge\NativeComponent as EdgeNativeComponent;
+use Illuminate\View\View;
+use Native\Mobile\Edge\NativeComponent;
 
 class TicketListScreen extends NativeComponent
 {
     public string $title = 'Le Mie Segnalazioni';
 
+    /** @var array<int, array<string, mixed>> */
     public array $tickets = [];
 
+    /** @var array<string, mixed> */
     public array $filters = [
         'status' => 'all',
         'search' => '',
@@ -55,7 +57,7 @@ class TicketListScreen extends NativeComponent
 
     public function loadMore(): void
     {
-        if ($this->hasMore && !$this->isLoading) {
+        if ($this->hasMore && ! $this->isLoading) {
             $this->currentPage++;
             $this->loadTickets();
         }
@@ -81,14 +83,15 @@ class TicketListScreen extends NativeComponent
 
     public function navigateToDetail(string $ticketId): void
     {
-        $this->navigateTo('ticket-detail', ['ticketId' => $ticketId]);
+        $this->navigate('ticket-detail', ['ticketId' => $ticketId]);
     }
 
     public function navigateToCreate(): void
     {
-        $this->navigateTo('create-ticket');
+        $this->navigate('create-ticket');
     }
 
+    /** @return array<int, array<string, mixed>> */
     private function getDemoTickets(): array
     {
         return [
@@ -160,9 +163,12 @@ class TicketListScreen extends NativeComponent
         ];
     }
 
-    public function render(): EdgeNativeComponent
+    public function render(): View
     {
-        return view('mobile::native.screens.ticket-list', [
+        /** @var view-string $view */
+        $view = 'mobile::native.screens.ticket-list';
+
+        return view($view, [
             'title' => $this->title,
             'tickets' => $this->tickets,
             'filters' => $this->filters,
