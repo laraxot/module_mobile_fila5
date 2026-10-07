@@ -3,7 +3,7 @@ title: "Mobile module documentation index"
 type: index
 module: Mobile
 created: 2026-09-27
-updated: 2026-09-28
+updated: 2026-10-07
 qmd: "mobile nativephp agnostic module folio volt documentation index"
 ---
 
@@ -46,7 +46,27 @@ Folio + Volt; la business logic vive nelle Actions del modulo owner.
 - [boundary story](stories/1.11.mobile-module-boundary.story.md): ownership;
 - [FixCity NativePHP contract](../../Fixcity/docs/bmad/fixcity-nativephp-mobile.md):
   consumer e gate esterni;
-- [FixCity actor flows](../../Fixcity/docs/actor-flows.md): journey completo.
+- [FixCity actor flows](../../Fixcity/docs/actor-flows.md): journey completo;
+- [story 1.12 PHPStan cleanup](stories/1.12.phpstan-level-max-mobile-cleanup.story.md):
+  sezione 2026-10-07 con la rimozione dei controller Restaurant, prove e follow-up.
+
+## Story storiche del dominio ristorante (superseded)
+
+Le story 1.1, 1.7, 1.9 e 1.10 descrivono l'app cameriere del progetto ristorante
+(`Modules/Restaurant`, che non esiste in questo monorepo). Restano come cronologia, non
+come requisiti: il contratto vigente e' quello agnostico di README e story 1.11. Non
+cancellarle ne' rinumerarle.
+
+| Story | Stato |
+|---|---|
+| 1.1 waiter app, 1.7 presa ordini, 1.9 tenant mapping, 1.10 legacy migration | superseded da 1.11 |
+| 1.8 NativePHP integration | storico, non prova di stato attuale |
+| STORY-MOBILE-INVESTOR-DEMO | scaffolding da riscrivere, non riparare |
+
+I controller `Http/Controllers/Api/MobileController.php` e
+`app/Http/Controllers/MobileController.php` sono stati cancellati tre volte e riportati da
+merge con snapshot diversi: se ricompaiono dopo un merge, sono un residuo e vanno rimossi
+di nuovo (vedi 1.12).
 
 Il test consumer `/it/tickets` raggiunge il runtime ma richiede ancora l'adapter CMS
 del componente `page`; il modulo Mobile non lo implementa per preservare il boundary
