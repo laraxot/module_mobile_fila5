@@ -8,18 +8,19 @@ use Spatie\QueueableAction\QueueableAction;
 
 /**
  * Action for scanning QR codes on menu items.
- * Returns product information and adds to current order.
+ * Returns product, category or table information only: adding lines to an order
+ * is up to the caller (see TakeOrderAction, which receives items and qr_code).
  */
 class ScanQrAction
 {
     use QueueableAction;
 
     /** @return array<string, mixed> */
-    public function execute(string $qrCode, ?string $waiterSessionId = null): array
+    public function execute(string $qrCode): array
     {
         // QR code format: "product:{id}" or "category:{id}" or "table:{id}"
         if (str_starts_with($qrCode, 'product:')) {
-            return $this->handleProductQr($qrCode, $waiterSessionId);
+            return $this->handleProductQr($qrCode);
         }
 
         if (str_starts_with($qrCode, 'category:')) {
@@ -37,7 +38,7 @@ class ScanQrAction
     }
 
     /** @return array<string, mixed> */
-    private function handleProductQr(string $qrCode, ?string $waiterSessionId): array
+    private function handleProductQr(string $qrCode): array
     {
         $productId = (int) substr($qrCode, strlen('product:'));
         // Mock product data for demo - in production would query OrderQueue or a Product model

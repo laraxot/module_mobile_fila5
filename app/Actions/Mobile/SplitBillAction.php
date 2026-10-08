@@ -19,7 +19,7 @@ class SplitBillAction
     /**
      * @param array<int, array{notes?: string, amount?: float|int, item_ids?: array<int, int>}> $splits
      * @param array<int, string>|null $paymentMethods
-     * @return array<int, array<string, mixed>>
+     * @return list<array{order_id: string, amount: float, method: string, notes: string}>
      */
     public function execute(
         int $orderId,
@@ -36,10 +36,10 @@ class SplitBillAction
         $orderData = $order->order_data;
         $rawTotal = $orderData['total'] ?? 0;
         $totalAmount = is_numeric($rawTotal) ? (float) $rawTotal : 0.0;
-        $results = [];
 
-        /** @var array<int, array<string, mixed>> $result */
-        $result = DB::transaction(function () use ($order, $orderData, $splitType, $splits, $paymentMethods, $totalAmount, &$results): array {
+        return DB::transaction(function () use ($order, $orderData, $splitType, $splits, $paymentMethods, $totalAmount): array {
+            $results = [];
+
             switch ($splitType) {
                 case 'equal':
                     $count = max(1, count($splits));
@@ -105,12 +105,10 @@ class SplitBillAction
                     throw new \InvalidArgumentException("Unknown split type: {$splitType}");
             }
 
-            // Check if fully paid
+            // OrderQueue non ha uno stato "paid": le quote restano nel payload dell'ordine in coda.
             $order->update(['order_data' => [...$orderData, 'splits' => $results]]);
 
             return $results;
         });
-
-        return $result;
     }
 }
