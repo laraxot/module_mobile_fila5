@@ -1,39 +1,34 @@
-#!/bin/bash
-# APK Build Script for FixCity Mobile
-# NativePHP for Mobile v3.0 — Android APK
-# BMAD + Second Brain — Auto-generated
+#!/usr/bin/env bash
 
-echo "=== FIXCITY MOBILE APK BUILD ==="
-echo "NativePHP package: nativephp/mobile ^3.0"
-echo "Target: Android APK for investor demo"
-echo ""
+set -euo pipefail
 
-# Build paths
-PROJECT_DIR="/mnt/nas07/var/www/_bases/base_fixcity_fila5/laravel"
-MODULE_DIR="$PROJECT_DIR/Modules/Mobile"
+# Build the Restaurant NativePHP Android artifact from the Laravel project root.
+# Signing is deliberately external: credentials must never live in this module.
 
-# Configure for Android
-export NATIVEPHP_ANDROID=1
-export NATIVEPHP_BUILD_MODE=release
+project_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+cd "$project_dir"
 
-echo "Step 1: Verify NativePHP mobile package..."
-ls "$PROJECT_DIR/vendor/nativephp/mobile/src/" | head -3 || echo "Package verified in vendor"
+: "${JAVA_HOME:=/usr/lib/jvm/java-17-openjdk-amd64}"
+: "${ANDROID_HOME:=/opt/android-sdk}"
+export JAVA_HOME ANDROID_HOME
+export PATH="$JAVA_HOME/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$PATH"
 
-echo "Step 2: Configure module JSON..."
-echo '{"name":"fixcity-mobile","version":"1.0.0-demo","platforms":["android","ios"],"demo":true,"status":"build-ready"}' > "$MODULE_DIR/resources/json/app-config.json"
+if [[ ! -x "$JAVA_HOME/bin/java" ]]; then
+    printf 'Java 17 is required (JAVA_HOME=%s)\n' "$JAVA_HOME" >&2
+    exit 1
+fi
 
-echo "Step 3: Export map JSON (GeoJSON FeatureCollection)..."
-ls "$MODULE_DIR/resources/json/" 2>/dev/null || mkdir -p "$MODULE_DIR/resources/json/"
+php artisan native:install android --no-interaction
 
-echo '{"type":"FeatureCollection","features":[{"type":"Feature","properties":{"title":"Palermo","status":"open"},"geometry":{"type":"Point","coordinates":[13.3286,38.1243]}}]}' > "$MODULE_DIR/resources/json/demo-map.json"
-echo "Demo map JSON saved — ready for APK"
+if [[ -z "${ANDROID_KEYSTORE_FILE:-}" || -z "${ANDROID_KEYSTORE_PASSWORD:-}" ||
+    -z "${ANDROID_KEY_ALIAS:-}" || -z "${ANDROID_KEY_PASSWORD:-}" ]]; then
+    printf '%s\n' 'Set ANDROID_KEYSTORE_FILE, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS and ANDROID_KEY_PASSWORD for a signed APK.' >&2
+    exit 2
+fi
 
-echo "Step 4: Verify all flows..."
-echo "Guest (non-logged): view_map ✓, view_reports ✓, report_anon ✓"
-echo "User (logged): view_map ✓, create_report ✓, view_my_reports ✓"
-echo "Moderator (quartiere): moderate_reports ✓, approve ✓, reject ✓"
-echo "Admin (comune): manage_users ✓, analytics ✓, config ✓"
+php artisan native:package android --build-type=release --no-interaction --no-tty
 
-echo "=== APK BUILD READY ==="
-echo "Run: native:install or native:build to generate APK"
-echo "Output: android/app/build/outputs/apk/release/fixcity-mobile-release.apk"
+apk="$project_dir/nativephp/android/app/build/outputs/apk/release/app-release.apk"
+test -f "$apk"
+printf 'APK: %s\nSHA-256: ' "$apk"
+sha256sum "$apk"

@@ -55,6 +55,7 @@ cameriere del dominio ristorante e restano come cronologia, superseded dal contr
 | [1.12 PHPStan level max mobile cleanup](stories/1.12.phpstan-level-max-mobile-cleanup.story.md) | done |
 | [2026-10-08 PHPStan ScanQrAction e SplitBillAction](stories/2026-10-08-phpstan-mobile-scanqr-splitbill.story.md) | done |
 | [PHPStan TakeOrderAction senza modello Fixcity](stories/phpstan-mobile-take-order.story.md) | done |
+| [2.1 catalogo reale e contesto QR tavolo](stories/2.1.real-catalog-qr-context.story.md) | done |
 | [STORY-MOBILE-INVESTOR-DEMO](stories/STORY-MOBILE-INVESTOR-DEMO.md) | in_progress, scaffolding da riscrivere (vedi INDEX.md) |
 
 ## Riferimenti esterni al monorepo

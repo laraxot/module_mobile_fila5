@@ -14,6 +14,17 @@ discussions:
 
 # Mobile Module Documentation
 
+## Stato Restaurant waiter (2026-10-14)
+
+Il package NativePHP è installato e un APK Android release del progetto Restaurant
+è stato compilato e firmato. L'artefatto e la prova di build sono descritti in
+[INDEX.md](INDEX.md). Questa è una prova di packaging, non ancora una dichiarazione
+di completamento del flusso cameriere: login, catalogo, carrello, invio comanda,
+retry offline e smoke test su dispositivo richiedono ancora verifica end-to-end.
+
+Le sezioni FixCity sotto sono materiale storico del contenitore riusabile e non
+descrivono il prodotto Restaurant.
+
 > Ingresso della cartella docs: [00-INDEX.md](00-INDEX.md) (canonico). Vetrina del modulo: [../README.md](../README.md).
 > Le spunte e i badge di stato di questo file sono acceptance criteria, non evidence: lo stato verificato sta in [INDEX.md](INDEX.md).
 

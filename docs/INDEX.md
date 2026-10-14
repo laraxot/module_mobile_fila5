@@ -24,15 +24,13 @@ Folio + Volt; la business logic vive nelle Actions del modulo owner.
 
 ## Stato verificato
 
-- `nativephp/mobile` 4.5.2 installato nel progetto Laravel;
+- `nativephp/mobile` 4.6.0 installato nel progetto Laravel;
 - configurazione package parametrica via env, senza default ristorante;
 - shell Android NativePHP generato localmente;
-- APK Android debug prodotto in `nativephp/android/app/build/outputs/apk/debug/app-debug.apk`;
-- runtime Android verificato: bundle estratto, persistent PHP avviato, Activity
-  NativePHP fully drawn, `/it/tickets` HTTP 200, Vite CSS/JS HTTP 200 e logo
-  Design-Comuni HTTP 200;
-- APK debug v24 installato nell’emulatore Android API 36; SHA-256
-  `3b9cd7efc35a3f30c0f27c8a9d84baac9eccb77828ff28e6d603831eea3b32a0`;
+- APK Android release prodotto il 2026-10-14 in `nativephp/android/app/build/outputs/apk/release/app-release.apk`;
+- APK verificato con `apksigner verify` (APK Signature Scheme v2), package `com.restaurant.waiter`, SHA-256 `7875881ac87a927375f122be3fbed469fd352e0c8d04d844286d9cb063b1db5b`;
+- build riproducibile tramite `build-apk.sh`, con Java 17, Android SDK e keystore esterno;
+- runtime Android e installazione su emulatore non verificati in questa sessione: non risultano device/AVD disponibili;
 - iOS/push/offline non sono dichiarati pronti senza artefatto e test runtime;
 - iOS richiede macOS/Xcode; Linux non produce una build iOS firmata.
 

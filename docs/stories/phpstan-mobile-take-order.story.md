@@ -1,5 +1,6 @@
 ---
 title: "[STORY] PHPStan Mobile: TakeOrderAction senza modello Fixcity"
+qmd: "phpstan mobile take order action order queue waiter_session_id fixcity"
 type: story
 status: done
 module: Mobile
