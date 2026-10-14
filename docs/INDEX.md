@@ -1,13 +1,20 @@
 ---
-title: "Mobile module documentation index"
+title: "Mobile: ownership e stato verificato"
 type: index
 module: Mobile
 created: 2026-09-27
-updated: 2026-10-07
+updated: 2026-10-14
 qmd: "mobile nativephp agnostic module folio volt documentation index"
+tags: [mobile, nativephp, ownership, stato-verificato]
+issues:
+  - "https://github.com/laraxot/module_mobile_fila5/issues/1"
+discussions:
+  - "https://github.com/laraxot/module_mobile_fila5/discussions/2"
 ---
 
-# Mobile — indice canonico
+# Mobile: ownership e stato verificato
+
+> Ruolo: dettaglio di ownership, stato verificato e story superseded. L'indice canonico della cartella e' [00-INDEX.md](00-INDEX.md); questo file non e' piu' un ingresso alternativo.
 
 ## Ownership
 
@@ -44,9 +51,9 @@ Folio + Volt; la business logic vive nelle Actions del modulo owner.
 - [NativePHP integration story](stories/1.8.nativephp-integration.story.md): storico,
   non prova di stato attuale;
 - [boundary story](stories/1.11.mobile-module-boundary.story.md): ownership;
-- [FixCity NativePHP contract](../../Fixcity/docs/bmad/fixcity-nativephp-mobile.md):
+- FixCity NativePHP contract (`Modules/Fixcity/docs/bmad/fixcity-nativephp-mobile.md`, non presente in questo monorepo, vive nel progetto FixCity):
   consumer e gate esterni;
-- [FixCity actor flows](../../Fixcity/docs/actor-flows.md): journey completo;
+- FixCity actor flows (`Modules/Fixcity/docs/actor-flows.md`, non presente in questo monorepo): journey completo;
 - [story 1.12 PHPStan cleanup](stories/1.12.phpstan-level-max-mobile-cleanup.story.md):
   sezione 2026-10-07 con la rimozione dei controller Restaurant, prove e follow-up.
 

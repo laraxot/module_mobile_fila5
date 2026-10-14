@@ -1,4 +1,21 @@
+---
+title: "Mobile: contratto del modulo NativePHP"
+type: concept
+module: Mobile
+tags: [mobile, nativephp, contract, readme]
+created: 2026-09-28
+updated: 2026-10-14
+qmd: "mobile nativephp contratto modulo agnostico user flows ui ux accessibilita build apk"
+issues:
+  - "https://github.com/laraxot/module_mobile_fila5/issues/1"
+discussions:
+  - "https://github.com/laraxot/module_mobile_fila5/discussions/2"
+---
+
 # Mobile Module Documentation
+
+> Ingresso della cartella docs: [00-INDEX.md](00-INDEX.md) (canonico). Vetrina del modulo: [../README.md](../README.md).
+> Le spunte e i badge di stato di questo file sono acceptance criteria, non evidence: lo stato verificato sta in [INDEX.md](INDEX.md).
 
 ## FixCity Mobile — NativePHP iOS/Android
 

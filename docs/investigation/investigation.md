@@ -1,9 +1,25 @@
 ---
+title: "Investigation: push notification reliability (bozza)"
 type: investigation
-title: "Investigation Push Notification Reliability"
-links: {github_issue: #XXX}
+status: draft
+module: Mobile
+tags: [mobile, investigation, push-notification, draft]
+created: 2026-10-07
+updated: 2026-10-14
+qmd: "mobile investigation push notification reliability bozza template non compilato"
+issues:
+  - "DA CREARE"
+discussions:
+  - "DA CREARE"
+related:
+  - ../00-INDEX.md
 ---
+
 # Investigation: Push Notification Reliability
+
+> Stato 2026-10-14: bozza generata da template, non e' un'investigazione completata. Le sezioni "Feature Missing" e "Acceptance Criteria"
+> contengono segnaposto (Feature A/B/C, criteri APCA non pertinenti al titolo). Il lifecycle dei token push e' tra i gap aperti in
+> [bmad/README.md](../bmad/README.md). Da riscrivere o archiviare con una story dedicata.
 
 ## Problem Statement
 Analisi delle feature mancanti nel modulo Mobile.

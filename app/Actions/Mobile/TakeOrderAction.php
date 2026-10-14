@@ -2,20 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Modules\Mobile\Actions;
+namespace Modules\Mobile\Actions\Mobile;
 
-use Modules\Fixcity\Models\Ticket;
+use InvalidArgumentException;
+use Modules\Mobile\Models\OrderQueue;
 use Modules\Xot\Actions\Cast\SafeStringCastAction;
-use function Safe\json_encode;
 use Spatie\QueueableAction\QueueableAction;
 
 /**
- * Azione presa ordine cameriere — NativePHP offline-first.
+ * Presa ordine del cameriere, offline-first.
  *
- * Accetta dati ordine da mobile (QR tavolo, prodotti, modificatori),
- * crea/aggiorna ticket in stato offline, sincronizza quando online.
- *
- * @mixin TakeOrderAction
+ * Accoda l'ordine (tavolo, righe, QR) in `mobile_order_queue` con stato pending:
+ * SyncOfflineOrdersAction lo invia al server quando torna la connessione.
+ * Ritorna l'id della riga in coda.
  */
 class TakeOrderAction
 {
@@ -24,38 +23,31 @@ class TakeOrderAction
     /** @param array<string, mixed> $payload */
     public function execute(array $payload): string
     {
+        $waiterSessionId = SafeStringCastAction::cast($payload['waiter_session_id'] ?? '');
         $waiterId = SafeStringCastAction::cast($payload['waiter_id'] ?? '');
         $tableId = SafeStringCastAction::cast($payload['table_id'] ?? '');
         $items = $payload['items'] ?? [];
         $qrCode = SafeStringCastAction::cast($payload['qr_code'] ?? '');
 
-        $itemsPayload = is_array($items) ? $items : [];
-        $content = [
-            'waiter_id' => $waiterId,
-            'table_id' => $tableId,
-            'items' => $itemsPayload,
-            'qr_code' => $qrCode,
-            'status' => 'open',
-            'source' => 'mobile',
-            'created_at_utc' => date('c'),
-        ];
+        if ($waiterSessionId === '' || $tableId === '') {
+            throw new InvalidArgumentException('waiter_session_id e table_id sono obbligatori');
+        }
 
-        $ticket = Ticket::query()->firstOrCreate(
-            ['code' => 'MOBILE-'.bin2hex(random_bytes(8))],
-            [
-                'name' => 'Ordine cameriere tavolo '.$tableId,
-                'content' => json_encode($content),
-                'owner_id' => $waiterId,
-                'ticket_prefix' => 'MOBILE',
+        $order = OrderQueue::query()->create([
+            'waiter_session_id' => $waiterSessionId,
+            'table_id' => (int) $tableId,
+            'order_data' => [
+                'waiter_id' => $waiterId,
+                'table_id' => $tableId,
+                'items' => is_array($items) ? $items : [],
+                'qr_code' => $qrCode,
+                'status' => 'open',
+                'source' => 'mobile',
+                'created_at_utc' => date('c'),
             ],
-        );
+            'status' => OrderQueue::STATUS_PENDING,
+        ]);
 
-        Ticket::withoutEvents(static function () use ($ticket, $content): void {
-            Ticket::query()->whereKey($ticket->id)->update([
-                'content' => json_encode($content),
-            ]);
-        });
-
-        return (string) $ticket->code;
+        return $order->id;
     }
 }
