@@ -1,4 +1,5 @@
 ---
+<<<<<<< .merge_file_vmwsOP
 title: "Mobile module documentation"
 type: readme
 status: stale
@@ -26,7 +27,36 @@ Confronto con il codice di `laravel/Modules/Mobile` e con il progetto. Il testo 
 10. Checklist demo: "All PHPStan checks passing" e' vero oggi (`phpstan analyse Modules/Mobile`, exit 0). Senza evidenza nel modulo: audit di accessibilita' completo, flussi guest/user/moderator/admin, "APK build script created". Il solo test Pest (`tests/Unit/Data/RestaurantDataTest.php`) copre i DTO ristorante. Vero: `Themes/Sixteen/resources/views/mobile/` esiste.
 11. Palette: la tabella ammette `#E8E8E8` a 1.45:1, mentre la tabella WCAG sotto afferma testo sempre >= 4.5:1. Palette e tipografia sono specifiche di design non misurate sul codice.
 
+=======
+title: "Mobile: contratto del modulo NativePHP"
+type: concept
+module: Mobile
+tags: [mobile, nativephp, contract, readme]
+created: 2026-09-28
+updated: 2026-10-14
+qmd: "mobile nativephp contratto modulo agnostico user flows ui ux accessibilita build apk"
+issues:
+  - "https://github.com/laraxot/module_mobile_fila5/issues/1"
+discussions:
+  - "https://github.com/laraxot/module_mobile_fila5/discussions/2"
+---
+
+>>>>>>> .merge_file_PCmX0R
 # Mobile Module Documentation
+
+## Stato Restaurant waiter (2026-10-14)
+
+Il package NativePHP è installato e un APK Android release del progetto Restaurant
+è stato compilato e firmato. L'artefatto e la prova di build sono descritti in
+[INDEX.md](INDEX.md). Questa è una prova di packaging, non ancora una dichiarazione
+di completamento del flusso cameriere: login, catalogo, carrello, invio comanda,
+retry offline e smoke test su dispositivo richiedono ancora verifica end-to-end.
+
+Le sezioni FixCity sotto sono materiale storico del contenitore riusabile e non
+descrivono il prodotto Restaurant.
+
+> Ingresso della cartella docs: [00-INDEX.md](00-INDEX.md) (canonico). Vetrina del modulo: [../README.md](../README.md).
+> Le spunte e i badge di stato di questo file sono acceptance criteria, non evidence: lo stato verificato sta in [INDEX.md](INDEX.md).
 
 ## FixCity Mobile — NativePHP iOS/Android
 

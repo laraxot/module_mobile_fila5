@@ -8,6 +8,7 @@ tags: [bmad, mobile, nativephp, geojson]
 qmd: "Mobile module purpose architecture PRD epics gaps release"
 issues: ["https://github.com/laraxot/base_fixcity_fila5/issues/383"]
 discussions: ["https://github.com/laraxot/base_fixcity_fila5/discussions/392"]
+created: 2026-10-07
 ---
 # Mobile BMAD dossier
 **Purpose / product brief:** provide an agnostic NativePHP/mobile host; it consumes contracts and does not embed municipality or restaurant domain rules.
