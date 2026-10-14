@@ -1,8 +1,12 @@
 ---
 type: investigation
 title: "Investigation Push Notification Reliability"
-links: {github_issue: #XXX}
+links: {github_issue: "#XXX"}
+status: stale
 ---
+
+> Nota 2026-10-14 (docs-audit): modello non compilato: il titolo parla di affidabilita' delle push ma il corpo ha segnaposto (Feature A/B/C) e criteri di contrasto estranei al modulo; dice '8 stories' mentre stories/ ne ha 9; nessuna indagine reale. Contenuto non riscritto, verificare prima di usarlo.
+
 # Investigation: Push Notification Reliability
 
 ## Problem Statement

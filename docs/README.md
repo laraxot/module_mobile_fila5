@@ -1,10 +1,38 @@
+---
+title: "Mobile module documentation"
+type: readme
+status: stale
+updated: 2026-10-14
+module: Mobile
+tags: [mobile, nativephp, module, documentation]
+qmd: "mobile nativephp readme acceptance criteria stale verification"
+---
+
+> Nota 2026-10-14 (docs-audit): le tabelle di stato, la sezione rotte, la struttura, i comandi di build e gli esempi di codice di questo README non corrispondono al codice (11 punti nella sezione seguente, prove in [wiki/nativephp-build-and-run.md](wiki/nativephp-build-and-run.md)). Contenuto non riscritto, verificare prima di usarlo. Ingresso canonico del `docs/`: [00-INDEX.md](00-INDEX.md).
+
+## Correzioni verificate (2026-10-14)
+
+Confronto con il codice di `laravel/Modules/Mobile` e con il progetto. Il testo originale resta sotto, invariato.
+
+1. Pacchetto: il README dice `nativephp/mobile ^3.0`; `composer.json` del modulo richiede `^4.5` e il progetto ha installato 4.6.0.
+2. Rotte: `routes/api.php`, `routes/mobile.php` e `routes/web.php` restituiscono `[]`; non esistono `app/Http`, `DashboardController`, `ReportController` ne' la vista `mobile.welcome`. Le pagine Folio `resources/views/pages/mobile/{index,map}.blade.php` danno 404 su `/it/mobile` e `/it/mobile/map` (dev server, 2026-10-14) e usano `route('mobile.map')` e `route('mobile.create')`, che non hanno una rotta.
+3. Flussi moderatore e amministrazione: non esistono `/mobile/moderator` ne' `/mobile/admin`; `00-INDEX.md` dichiara il moderatore non abilitato. Le colonne con la spunta sono criteri di accettazione, non funzioni verificate.
+4. Struttura: `NativeComponents/`, `Http/Middleware/`, `resources/json/` e `resources/vite.config.js` non esistono. Esistono invece `app/Native/Screens/` (4 schermate), `app/Notifications/`, `app/Actions/Mobile/` (6 Actions), `app/Filament/` e `app/Providers/`.
+5. Build: `npx nativephp configure:android` e `./vendor/bin/nativephp build:android --release` non esistono. I comandi reali sono `php artisan native:install`, `native:run`, `native:build`, `native:package`. L'APK reale e' `laravel/nativephp/android/app/build/outputs/apk/debug/app-debug.apk`, non `.../release/fixcity-mobile-release.apk`.
+6. Esempi di codice: la facade `NativePHP::camera()` (e `http()`, `location()`, `notifications()`) non esiste; le facade reali sono in `Native\Mobile\Facades` (Camera, Geolocation e altre).
+7. Configurazione: `resources/json/app-config.json` non esiste e non viene creato da un "MobileDemoDataSeeder" (classe inesistente; i seeder sono MobileSeeder, DemoDataSeeder, OrderSeeder, WaiterSeeder, MenuItemSeeder). Lo scrive `build-apk.sh`, che e' uno stub: stampa spunte fisse e non compila nulla.
+8. "Contenitore agnostico" e "Contract interface defined": `Modules\Mobile\App\Contracts\MobileGatewayContract` ha un namespace non conforme al PSR-4 e non e' caricabile (tinker: `interface_exists` falso). Il modulo contiene ancora il dominio cameriere/ordini/KDS (modelli `OrderQueue` e `WaiterSession`, 6 Actions, 2 Notifications `Kds*`, `RestaurantGateway`, tabelle `mobile_waiter_sessions` e `mobile_order_queue`).
+9. Tabella BMAD: STORY-410, STORY-371 e STORY-397 non sono story del modulo; stanno in `docs/stories/` alla radice del repo. Le story del modulo sono le 9 in [stories/](stories/).
+10. Checklist demo: "All PHPStan checks passing" e' vero oggi (`phpstan analyse Modules/Mobile`, exit 0). Senza evidenza nel modulo: audit di accessibilita' completo, flussi guest/user/moderator/admin, "APK build script created". Il solo test Pest (`tests/Unit/Data/RestaurantDataTest.php`) copre i DTO ristorante. Vero: `Themes/Sixteen/resources/views/mobile/` esiste.
+11. Palette: la tabella ammette `#E8E8E8` a 1.45:1, mentre la tabella WCAG sotto afferma testo sempre >= 4.5:1. Palette e tipografia sono specifiche di design non misurate sul codice.
+
 # Mobile Module Documentation
 
 ## FixCity Mobile — NativePHP iOS/Android
 
 **Version:** 1.0.0-demo  
 **Module:** fixcity/mobile  
-**Package:** nativephp/mobile ^3.0  
+**Package:** nativephp/mobile ^3.0 (corretto: vedi punto 1)  
 **Status:** NativePHP shell installato; build e capability native da verificare  
 
 ---

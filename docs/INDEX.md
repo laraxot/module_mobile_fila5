@@ -2,12 +2,17 @@
 title: "Mobile module documentation index"
 type: index
 module: Mobile
+status: superseded
+superseded_by: 00-INDEX.md
 created: 2026-09-27
-updated: 2026-10-07
+updated: 2026-10-14
+tags: [mobile, nativephp, index, legacy]
 qmd: "mobile nativephp agnostic module folio volt documentation index"
 ---
 
-# Mobile — indice canonico
+> Nota 2026-10-14 (docs-audit): questo file e' stato sostituito da [00-INDEX.md](00-INDEX.md), l'ingresso canonico previsto dal contratto dei docs. Le sezioni verificate sono state integrate li'; due affermazioni qui sotto sono superate: `nativephp/mobile` e' installato in 4.6.0 (non 4.5.2) e "agnostico" significa solo assenza di import da `Modules\Restaurant` (verificato con grep): il modulo contiene ancora modelli, Actions e tabelle proprie del dominio cameriere/ordini/KDS. Contenuto non riscritto.
+
+# Mobile — indice canonico (legacy)
 
 ## Ownership
 
