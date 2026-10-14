@@ -96,13 +96,23 @@
                     },
                     onEachFeature: function(feature, layer) {
                         var props = feature.properties || {};
-                        var statusClass = 'status-' + (props.status?.value || 'open');
-                        var popupContent = '<h3>' + (props.title || 'Segnalazione') + '</h3>' +
-                            '<p><strong>Tipo:</strong> ' + (props.type?.label || '-') + '</p>' +
-                            '<p><strong>Città:</strong> ' + (props.city || '-') + '</p>' +
-                            '<p><strong>Indirizzo:</strong> ' + (props.address || '-') + '</p>' +
-                            '<p><strong>Stato:</strong> <span class="' + statusClass + '">' + (props.status?.label || '-') + '</span></p>' +
-                            '<p><a href="' + (props.detail_url || '#') + '">Dettaglio →</a></p>';
+                        // Titolo, indirizzo e citta' li scrive il cittadino: nel popup entrano come TESTO, mai come HTML (audit DCP-181, C-2).
+                        var esc = function (value) {
+                            return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) {
+                                return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c];
+                            });
+                        };
+                        // Solo percorsi dello stesso sito o http(s): niente `javascript:` nell'href.
+                        var safeUrl = function (value) {
+                            return /^(\/|https?:\/\/)/i.test(String(value || '')) ? esc(value) : '#';
+                        };
+                        var statusClass = 'status-' + esc(props.status?.value || 'open').replace(/[^a-z0-9_-]/gi, '');
+                        var popupContent = '<h3>' + esc(props.title || 'Segnalazione') + '</h3>' +
+                            '<p><strong>Tipo:</strong> ' + esc(props.type?.label || '-') + '</p>' +
+                            '<p><strong>Città:</strong> ' + esc(props.city || '-') + '</p>' +
+                            '<p><strong>Indirizzo:</strong> ' + esc(props.address || '-') + '</p>' +
+                            '<p><strong>Stato:</strong> <span class="' + statusClass + '">' + esc(props.status?.label || '-') + '</span></p>' +
+                            '<p><a href="' + safeUrl(props.detail_url) + '">Dettaglio →</a></p>';
                         layer.bindPopup(popupContent);
                     }
                 }).addTo(map);
