@@ -32,7 +32,7 @@ related:
 |---|---|---|
 | 2026-09-27 | Mobile non dipende dal modulo Restaurant: conosce solo il port `RestaurantGateway` e i DTO in `app/Data`; la dipendenza ammessa e' `Restaurant -> Mobile` | [story 1.11](stories/1.11.mobile-module-boundary.story.md); `grep "Modules.Restaurant"` su `app database tests config` senza risultati (2026-10-14) |
 | 2026-10-07 | Nessun controller e nessuna rotta nel modulo: il front office e' Folio + Volt. `routes/api.php`, `mobile.php`, `web.php` restituiscono `[]` e `app/Http` non esiste | [story 1.12](stories/1.12.phpstan-level-max-mobile-cleanup.story.md), [prompt](prompts/01.md); i controller sono stati cancellati tre volte e riportati da merge con snapshot vecchi |
-| 2026-10-14 | `00-INDEX.md` e' l'unico ingresso del `docs/`; `INDEX.md` e' superseded; il README e' `stale` (criteri di accettazione, non stato) | [00-INDEX](00-INDEX.md), [story](stories/2026-10-14-docs-mobile-studio-e-ingressi.story.md) |
+| 2026-10-14 | `00-INDEX.md` e' l'unico ingresso del `docs/`; `INDEX.md` e' superseded; il README e' `stale` (criteri di accettazione, non stato) | [00-INDEX](00-INDEX.md), [story](stories/docs-mobile-studio-e-ingressi.story.md) |
 
 ## Open Questions
 

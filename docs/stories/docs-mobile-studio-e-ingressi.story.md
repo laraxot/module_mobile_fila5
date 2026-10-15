@@ -6,7 +6,7 @@ created: 2026-10-14
 updated: 2026-10-14
 module: Mobile
 tags: [docs, organizzazione, mobile, nativephp, bmad]
-related: [bmad-output/stories/docs-organization/README.md, bmad-output/docs-architecture/module-theme-docs-contract.md, laravel/Modules/Fixcity/docs/stories/2026-10-13-dcp-56-organizzazione-docs-moduli-e-temi.story.md]
+related: [bmad-output/stories/docs-organization/README.md, bmad-output/docs-architecture/module-theme-docs-contract.md, laravel/Modules/Fixcity/docs/stories/dcp-56-organizzazione-docs-moduli-e-temi.story.md]
 qmd: "mobile docs studio ingressi readme stale 00-INDEX nativephp apk verifica"
 ---
 

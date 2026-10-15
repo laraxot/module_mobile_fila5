@@ -15,7 +15,7 @@ Voci in ordine cronologico inverso. Le decisioni stanno in [decision-log](../dec
 
 ## 2026-10-14
 
-Studio del modulo contro i docs (story [2026-10-14-docs-mobile-studio-e-ingressi](../stories/2026-10-14-docs-mobile-studio-e-ingressi.story.md)).
+Studio del modulo contro i docs (story [2026-10-14-docs-mobile-studio-e-ingressi](../stories/docs-mobile-studio-e-ingressi.story.md)).
 
 - `README.md` contraddiceva il codice in 11 punti (versione, rotte, struttura, comandi di build, facade, checklist): marcato `stale` con la
   lista delle correzioni in testa; il testo originale non e' stato cancellato.

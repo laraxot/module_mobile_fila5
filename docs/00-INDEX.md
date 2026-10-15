@@ -56,7 +56,7 @@ iOS, push e offline non sono pronti: nessun artefatto.
 - [1.11 boundary del modulo](stories/1.11.mobile-module-boundary.story.md): ownership agnostica;
 - [1.12 PHPStan cleanup](stories/1.12.phpstan-level-max-mobile-cleanup.story.md): rimozione dei controller Restaurant (sezione 2026-10-07);
 - [1.8 integrazione NativePHP](stories/1.8.nativephp-integration.story.md): storico, non prova di stato attuale;
-- [2026-10-14 studio docs e ingressi](stories/2026-10-14-docs-mobile-studio-e-ingressi.story.md);
+- [2026-10-14 studio docs e ingressi](stories/docs-mobile-studio-e-ingressi.story.md);
 - consumer FixCity: [contratto NativePHP](../../Fixcity/docs/bmad/fixcity-nativephp-mobile.md) e [flussi attori](../../Fixcity/docs/actor-flows.md).
 
 ## Regole
@@ -116,7 +116,7 @@ cameriere del dominio ristorante e restano come cronologia, superseded dal contr
 | [1.10 legacy to mobile migration](stories/1.10.legacy-to-mobile-migration.story.md) | superseded da 1.11 |
 | [1.11 mobile module boundary](stories/1.11.mobile-module-boundary.story.md) | ready-for-dev (contratto vigente) |
 | [1.12 PHPStan level max mobile cleanup](stories/1.12.phpstan-level-max-mobile-cleanup.story.md) | done |
-| [2026-10-08 PHPStan ScanQrAction e SplitBillAction](stories/2026-10-08-phpstan-mobile-scanqr-splitbill.story.md) | done |
+| [2026-10-08 PHPStan ScanQrAction e SplitBillAction](stories/phpstan-mobile-scanqr-splitbill.story.md) | done |
 | [PHPStan TakeOrderAction senza modello Fixcity](stories/phpstan-mobile-take-order.story.md) | done |
 | [2.1 catalogo reale e contesto QR tavolo](stories/2.1.real-catalog-qr-context.story.md) | done |
 | [STORY-MOBILE-INVESTOR-DEMO](stories/STORY-MOBILE-INVESTOR-DEMO.md) | in_progress, scaffolding da riscrivere (vedi INDEX.md) |
