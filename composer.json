@@ -8,16 +8,16 @@
         "nativephp/mobile": "^4.5",
         "ext-json": "*"
     },
-    "autoload": {
-        "psr-4": {
-            "Modules\\Mobile\\": "app/"
-        }
-    },
     "extra": {
         "laravel": {
             "providers": [
                 "Modules\\Mobile\\Providers\\MobileServiceProvider"
             ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\Mobile\\": "app/"
         }
     },
     "minimum-stability": "stable",
