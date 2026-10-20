@@ -6,27 +6,17 @@ status: superseded
 superseded_by: 00-INDEX.md
 created: 2026-09-27
 updated: 2026-10-14
-<<<<<<< .merge_file_bUNUv8
-tags: [mobile, nativephp, index, legacy]
-=======
->>>>>>> .merge_file_JEylsM
 qmd: "mobile nativephp agnostic module folio volt documentation index"
-tags: [mobile, nativephp, ownership, stato-verificato]
+tags: [mobile, nativephp, index, legacy, ownership, stato-verificato]
 issues:
   - "https://github.com/laraxot/module_mobile_fila5/issues/1"
 discussions:
   - "https://github.com/laraxot/module_mobile_fila5/discussions/2"
 ---
 
-<<<<<<< .merge_file_bUNUv8
 > Nota 2026-10-14 (docs-audit): questo file e' stato sostituito da [00-INDEX.md](00-INDEX.md), l'ingresso canonico previsto dal contratto dei docs. Le sezioni verificate sono state integrate li'; due affermazioni qui sotto sono superate: `nativephp/mobile` e' installato in 4.6.0 (non 4.5.2) e "agnostico" significa solo assenza di import da `Modules\Restaurant` (verificato con grep): il modulo contiene ancora modelli, Actions e tabelle proprie del dominio cameriere/ordini/KDS. Contenuto non riscritto.
 
 # Mobile — indice canonico (legacy)
-=======
-# Mobile: ownership e stato verificato
-
-> Ruolo: dettaglio di ownership, stato verificato e story superseded. L'indice canonico della cartella e' [00-INDEX.md](00-INDEX.md); questo file non e' piu' un ingresso alternativo.
->>>>>>> .merge_file_JEylsM
 
 ## Ownership
 

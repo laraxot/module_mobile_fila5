@@ -1,15 +1,6 @@
 ---
 title: "Investigation: push notification reliability (bozza)"
 type: investigation
-<<<<<<< .merge_file_5FydCl
-title: "Investigation Push Notification Reliability"
-links: {github_issue: "#XXX"}
-status: stale
----
-
-> Nota 2026-10-14 (docs-audit): modello non compilato: il titolo parla di affidabilita' delle push ma il corpo ha segnaposto (Feature A/B/C) e criteri di contrasto estranei al modulo; dice '8 stories' mentre stories/ ne ha 9; nessuna indagine reale. Contenuto non riscritto, verificare prima di usarlo.
-
-=======
 status: draft
 module: Mobile
 tags: [mobile, investigation, push-notification, draft]
@@ -24,7 +15,8 @@ related:
   - ../00-INDEX.md
 ---
 
->>>>>>> .merge_file_RUDzRm
+> Nota 2026-10-14 (docs-audit): modello non compilato: il titolo parla di affidabilita' delle push ma il corpo ha segnaposto (Feature A/B/C) e criteri di contrasto estranei al modulo; dice '8 stories' mentre stories/ ne ha 9; nessuna indagine reale. Contenuto non riscritto, verificare prima di usarlo.
+
 # Investigation: Push Notification Reliability
 
 > Stato 2026-10-14: bozza generata da template, non e' un'investigazione completata. Le sezioni "Feature Missing" e "Acceptance Criteria"
