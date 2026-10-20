@@ -1,89 +1,46 @@
 ---
-title: "Mobile: ownership e stato verificato"
+title: "Mobile — Indice docs (canonico, sostituisce legacy INDEX.md)"
 type: index
+status: active
 module: Mobile
-status: superseded
-superseded_by: 00-INDEX.md
-created: 2026-09-27
-updated: 2026-10-14
-qmd: "mobile nativephp agnostic module folio volt documentation index"
-tags: [mobile, nativephp, index, legacy, ownership, stato-verificato]
-issues:
-  - "https://github.com/laraxot/module_mobile_fila5/issues/1"
-discussions:
-  - "https://github.com/laraxot/module_mobile_fila5/discussions/2"
+updated: 2026-10-20
+tags: [mobile, docs, module, index, bmad, nativephp, agnostic]
 ---
+# Mobile — Indice docs
 
-> Nota 2026-10-14 (docs-audit): questo file e' stato sostituito da [00-INDEX.md](00-INDEX.md), l'ingresso canonico previsto dal contratto dei docs. Le sezioni verificate sono state integrate li'; due affermazioni qui sotto sono superate: `nativephp/mobile` e' installato in 4.6.0 (non 4.5.2) e "agnostico" significa solo assenza di import da `Modules\Restaurant` (verificato con grep): il modulo contiene ancora modelli, Actions e tabelle proprie del dominio cameriere/ordini/KDS. Contenuto non riscritto.
+Modulo Mobile — host NativePHP agnostico (iOS/Android). **Boundary**: non contiene logica dominio FixCity, non importa `Modules\Restaurant`; consumer tramite contratti (`README.md`). Stato verificato 2026-10-14: `nativephp/mobile` 4.6.0; APK release verificato (`apksigner verify`, package `com.restaurant.waiter`, SHA-256 `787...`) via `build-apk.sh` (Java 17, Android SDK, keystore esterno).
 
-# Mobile — indice canonico (legacy)
+## Panoramica / File chiave
+- [`../README.md`](../README.md) — contratto canonico del modulo, boundary, consumer (FixCity, Geo, User) · [`README.md`](README.md) (docs, `status: stale`)
+- [`00-INDEX.md`](00-INDEX.md) — indice operativo (superseded da questo file per l'ingresso canonico breve; contenuto operativo completo mantenuto)
+- [`docs/bmad/bmad-dossier.md`](docs/bmad/bmad-dossier.md) — dossier BMAD (superseded da `docs/bmad/README.md`; conservato)
+- [`docs/bmad/decision-log.md`](docs/bmad/decision-log.md) — log decisioni (ownership, adapter, deep link)
+- [`bmad-planning.md`](bmad-planning.md) — piano implementazione
+- [`bmad-brainstorming.md`](bmad-brainstorming.md) — brainstorming
+- [`decision-log.md`](decision-log.md) — decision log consolidato (2026-10-16)
 
-## Ownership
+## Struttura
+- `app/` — Actions / Adapters / Contracts (nessun controller FO proprio; web è Folio+Volt)
+- `routes/` — rotte Folio/API per consumer
+- `docs/stories/` — storie feature (`1.8.nativephp-integration.story.md`, `1.11.mobile-module-boundary.story.md`, `1.12.phpstan-level-max-mobile-cleanup.story.md`)
+- `docs/bmad/` — dossier, planning, brainstorming, decision-log
+- `docs/investigation/` — indagini aperte
+- `docs/prompts/` — prompt engineering
+- `docs/stories/` — cronologia storica (superseded, non cancellate)
 
-`Modules/Mobile` è un contenitore NativePHP agnostico. Non contiene controller FO,
-rotte web/API proprie, modelli Restaurant o policy FixCity. Il front office web è
-Folio + Volt; la business logic vive nelle Actions del modulo owner.
+## Stato
+Indice breve creato 2026-10-20. `00-INDEX.md` resta ingresso operativo (13 KB) con stato verificato (APK, build, emulatore non verificato, iOS non disponibile su Linux). Nuovi `.md` usano nomi lowercase senza suffissi numerici sequenziali (`-1`, `-2`, `-3`). Controller cancellati e riportati da merge dopo `cd999d97e` — verifica con `rg` dopo ogni merge (vedi `1.12`).
 
-## Stato verificato
+## Relazioni
+- **Fixcity** — parent / manager (ticket, segnalazioni, actor flows); contrato `fixcity-nativephp-mobile.md` (repo FixCity, non qui)
+- **Geo** — localizzazione (AddressInput, mappe); consumer tramite `Geo/app/Filament/Forms/Components/`
+- **User** — autenticazione / autorizzazione / profilo (login, RBAC, 2FA, OAuth)
+- **Ticket** — calendario / timeline ticket (consumer tramite Actions)
+- **Notify** — notifiche push / stato (adapters locali)
+- **CMS / Sixteen** — componente `page` / adapter CMS per `/it/tickets` (pending)
 
-- `nativephp/mobile` 4.6.0 installato nel progetto Laravel;
-- configurazione package parametrica via env, senza default ristorante;
-- shell Android NativePHP generato localmente;
-- APK Android release prodotto il 2026-10-14 in `nativephp/android/app/build/outputs/apk/release/app-release.apk`;
-- APK verificato con `apksigner verify` (APK Signature Scheme v2), package `com.restaurant.waiter`, SHA-256 `7875881ac87a927375f122be3fbed469fd352e0c8d04d844286d9cb063b1db5b`;
-- build riproducibile tramite `build-apk.sh`, con Java 17, Android SDK e keystore esterno;
-- runtime Android e installazione su emulatore non verificati in questa sessione: non risultano device/AVD disponibili;
-- iOS/push/offline non sono dichiarati pronti senza artefatto e test runtime;
-- iOS richiede macOS/Xcode; Linux non produce una build iOS firmata.
-
-## Flussi canonici
-
-| Attore | Superficie | Owner | Stato |
-|---|---|---|---|
-| Guest | Folio/Volt pubblico | Fixcity + Sixteen | web verificabile; native adapter da decidere |
-| Cittadino | Folio/Volt + Actions | Fixcity | web owner; mobile consumer pending |
-| Moderatore | policy/capability Fixcity | Fixcity | non abilitato: ruolo da definire |
-| PA | Filament web | Fixcity | web owner; native adapter pending |
-
-## Documenti da leggere
-
-- [README del modulo](README.md): contratto e boundary;
-- [NativePHP integration story](stories/1.8.nativephp-integration.story.md): storico,
-  non prova di stato attuale;
-- [boundary story](stories/1.11.mobile-module-boundary.story.md): ownership;
-- FixCity NativePHP contract (`Modules/Fixcity/docs/bmad/fixcity-nativephp-mobile.md`, non presente in questo monorepo, vive nel progetto FixCity):
-  consumer e gate esterni;
-- FixCity actor flows (`Modules/Fixcity/docs/actor-flows.md`, non presente in questo monorepo): journey completo;
-- [story 1.12 PHPStan cleanup](stories/1.12.phpstan-level-max-mobile-cleanup.story.md):
-  sezione 2026-10-07 con la rimozione dei controller Restaurant, prove e follow-up.
-
-## Story storiche del dominio ristorante (superseded)
-
-Le story 1.1, 1.7, 1.9 e 1.10 descrivono l'app cameriere del progetto ristorante
-(`Modules/Restaurant`, che non esiste in questo monorepo). Restano come cronologia, non
-come requisiti: il contratto vigente e' quello agnostico di README e story 1.11. Non
-cancellarle ne' rinumerarle.
-
-| Story | Stato |
-|---|---|
-| 1.1 waiter app, 1.7 presa ordini, 1.9 tenant mapping, 1.10 legacy migration | superseded da 1.11 |
-| 1.8 NativePHP integration | storico, non prova di stato attuale |
-| STORY-MOBILE-INVESTOR-DEMO | scaffolding da riscrivere, non riparare |
-
-I controller `Http/Controllers/Api/MobileController.php` e
-`app/Http/Controllers/MobileController.php` sono stati cancellati tre volte e riportati da
-merge con snapshot diversi: se ricompaiono dopo un merge, sono un residuo e vanno rimossi
-di nuovo (vedi 1.12).
-
-Il test consumer `/it/tickets` raggiunge il runtime ma richiede ancora l'adapter CMS
-del componente `page`; il modulo Mobile non lo implementa per preservare il boundary
-agnostico.
-
-## Regola di aggiornamento
-
-Prima di creare un `.md`, cercare il canonico con `qmd`/`rg`; aggiornare questo indice
-solo quando cambia ownership o stato. I documenti storici restano referenziati dalle
-story, ma non sono acceptance evidence senza una verifica attuale.
-
-I nuovi `.md` usano nomi lowercase senza date/timestamp e senza suffissi numerici
-sequenziali (`-1`, `-2`, `-3`).
+## BMAD / Decisioni
+- [Decision log Mobile](docs/bmad/decision-log.md) — boundary agnostico, adapter, deep link, iOS/macOS constraint
+- `services-retirement.md` (Geo) — modello decisione Services→Actions non applicabile direttamente (Mobile non ha `app/Services` proprio; usa Actions esterni)
+- Riferimento `google-oauth-redirect-fix.md` (User/docs/decisions/) — pattern redirect OAuth per auth mobile (se implementato via User OAuth)
+- Stato dossier: `superseded` da `README.md` (stesso contenuto); `decision-log.md` attivo
