@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Filament\Widgets\Mobile;
 
-use Filament\Widgets\Widget;
+use Modules\Xot\Filament\Widgets\XotBaseWidget;
 use Illuminate\Support\Facades\Cache;
 use Modules\Mobile\Models\WaiterSession;
 use Modules\Mobile\Models\OrderQueue;
 
-class OrderWidget extends Widget
+class OrderWidget extends XotBaseWidget
 {
     protected static ?string $pollingInterval = '10s';
 
