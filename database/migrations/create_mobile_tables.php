@@ -8,7 +8,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('mobile_waiter_sessions', function (Blueprint $table) {
+        if (! Schema::hasTable('mobile_waiter_sessions')) {
+            Schema::create('mobile_waiter_sessions', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->index();
             $table->string('device_id')->index();
@@ -24,9 +25,11 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->unique(['device_id']);
-        });
+            });
+        }
 
-        Schema::create('mobile_order_queue', function (Blueprint $table) {
+        if (! Schema::hasTable('mobile_order_queue')) {
+            Schema::create('mobile_order_queue', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('waiter_session_id')->index();
             $table->foreignUuid('table_id')->index();
@@ -39,9 +42,11 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->index(['status', 'created_at']);
-        });
+            });
+        }
 
-        Schema::create('mobile_notifications', function (Blueprint $table) {
+        if (! Schema::hasTable('mobile_notifications')) {
+            Schema::create('mobile_notifications', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('waiter_session_id')->index();
             $table->string('type', 50);
@@ -53,9 +58,11 @@ return new class extends Migration
             $table->timestamps();
 
             $table->index(['waiter_session_id', 'read']);
-        });
+            });
+        }
 
-        Schema::create('mobile_push_tokens', function (Blueprint $table) {
+        if (! Schema::hasTable('mobile_push_tokens')) {
+            Schema::create('mobile_push_tokens', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('waiter_session_id')->index();
             $table->string('device_token', 255);
@@ -64,7 +71,8 @@ return new class extends Migration
             $table->timestamps();
 
             $table->unique(['device_token', 'platform']);
-        });
+            });
+        }
     }
 
     public function down(): void
