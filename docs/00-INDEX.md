@@ -31,7 +31,7 @@ Ingresso unico del `docs/` di `laravel/Modules/Mobile`, secondo il
 | Configurazione | `config/mobile.php`, `config/bifrost.php` | `bifrost.php` ha ancora `updater.repo = restaurant-fila5` |
 | Dominio cameriere, ordini, KDS | `app/Models` (`OrderQueue`, `WaiterSession`), `app/Actions/Mobile` (6), `app/Notifications` (2), `app/Filament`, `database/migrations/create_mobile_tables.php`, `database/seeders` (5), `app/Contracts/RestaurantGateway.php` | codice proprio del modulo, nessun import da `Modules\Restaurant`; decisione di rimozione aperta |
 | Contratto agnostico | `app/Contracts/MobileGatewayContract.php` | namespace `Modules\Mobile\App\Contracts` non conforme al PSR-4: non caricabile |
-| Test | `tests/Unit/Data/RestaurantDataTest.php` | 1 test, passa; copre solo i DTO ristorante |
+| Test | `tests/Unit/Datas/RestaurantDataTest.php` | 1 test, passa; copre solo i data object ristorante |
 | Qualita' | `phpstan analyse Modules/Mobile` | exit 0 il 2026-10-14 |
 
 Prove di build e runtime (APK debug con SHA-256, log dell'emulatore, comandi `native:*` reali): [wiki/nativephp-build-and-run.md](wiki/nativephp-build-and-run.md).
@@ -51,6 +51,8 @@ iOS, push e offline non sono pronti: nessun artefatto.
 | [INDEX](INDEX.md) | legacy, `superseded` | sostituito da questo file |
 
 ## Story e riferimenti
+
+- contratto dati: [Datas e confine agnostico](architecture/data-contracts.md);
 
 - [1.11 boundary del modulo](stories/1.11.mobile-module-boundary.story.md): ownership agnostica;
 - [1.12 PHPStan cleanup](stories/1.12.phpstan-level-max-mobile-cleanup.story.md): rimozione dei controller Restaurant (sezione 2026-10-07);

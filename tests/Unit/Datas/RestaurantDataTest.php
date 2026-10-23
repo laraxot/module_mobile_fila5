@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Modules\Mobile\Data\CategoryData;
-use Modules\Mobile\Data\ProductData;
-use Modules\Mobile\Data\TableData;
+use Modules\Mobile\Datas\CategoryData;
+use Modules\Mobile\Datas\ProductData;
+use Modules\Mobile\Datas\TableData;
 
 test('restaurant boundary data is immutable and serializable by properties', function (): void {
     $product = new ProductData(7, 'Pizza Margherita', 8.5, allergens: ['gluten']);

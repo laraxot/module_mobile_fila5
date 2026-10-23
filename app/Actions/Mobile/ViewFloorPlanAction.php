@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Actions\Mobile;
 
-use Modules\Mobile\Data\TableData;
+use Modules\Mobile\Datas\TableData;
 use Spatie\QueueableAction\QueueableAction;
 
 /**

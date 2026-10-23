@@ -37,7 +37,7 @@ Il commento `// Check if fully paid` era orfano: la versione Restaurant chiudeva
 
 - `php -l` sui due file: nessun errore.
 - `phpstan analyse` sui due file (con gli altri 5 dello swarm `small-modules`): `[OK] No errors`.
-- Pest: non eseguito (MySQL di test 10.100.200.53:3306 in timeout da questo host, rc=124; in `tests/Unit` solo `Data/RestaurantDataTest`, nessun test sulle due azioni).
+- Pest: non eseguito (MySQL di test 10.100.200.53:3306 in timeout da questo host, rc=124; in `tests/Unit` solo `Datas/RestaurantDataTest`, nessun test sulle due azioni).
 
 ## Aperto
 
