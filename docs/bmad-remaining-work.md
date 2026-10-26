@@ -8,6 +8,8 @@ updated: 2026-10-26
 tags: [bmad, mobile, module, stories, remaining-work]
 related:
   - ../../docs/second-brain/project/bmad-architecture.md
+status: draft
+qmd: "mobile module   bmad stories & remaining work mobile"
 ---
 
 # Mobile Module — BMAD Stories & Remaining Work

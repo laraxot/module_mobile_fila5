@@ -5,6 +5,7 @@ status: active
 module: Mobile
 updated: 2026-10-20
 tags: [mobile, docs, module, index, bmad, nativephp, agnostic]
+qmd: "mobile   indice docs mobile"
 ---
 # Mobile — Indice docs
 

@@ -1,3 +1,11 @@
+---
+title: "Mobile — completion backlog"
+type: note
+status: draft
+updated: 2026-10-26
+tags: [docs, mobile]
+qmd: "mobile   completion backlog mobile"
+---
 # Mobile — completion backlog
 
 Status: partial and evidence-driven. This file is the canonical owner-local list for future work.

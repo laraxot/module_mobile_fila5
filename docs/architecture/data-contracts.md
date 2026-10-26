@@ -4,6 +4,8 @@ type: architecture
 status: active
 module: Mobile
 tags: [mobile, datas, contracts, psr-4]
+updated: 2026-10-23
+qmd: "contratti dati mobile"
 ---
 
 # Contratti dati
