@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Contracts;
 
-use Modules\Mobile\Data\CategoryData;
-use Modules\Mobile\Data\ProductData;
-use Modules\Mobile\Data\TableData;
+use Modules\Mobile\Datas\CategoryData;
+use Modules\Mobile\Datas\ProductData;
+use Modules\Mobile\Datas\TableData;
 
 /**
  * Port used by Mobile to consume restaurant capabilities.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Mobile\Data;
+namespace Modules\Mobile\Datas;
 
 final readonly class ProductData
 {
@@ -11,8 +11,6 @@ final readonly class ProductData
         public int|string $productId,
         public string $name,
         public float $price,
-        public ?string $description = null,
-        public ?string $category = null,
         public array $allergens = [],
     ) {
     }

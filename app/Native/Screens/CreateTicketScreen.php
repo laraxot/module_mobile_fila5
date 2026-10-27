@@ -7,7 +7,7 @@ namespace Modules\Mobile\Native\Screens;
 use Illuminate\View\View;
 use Native\Mobile\Edge\NativeComponent;
 
-class TicketDetailScreen extends NativeComponent
+class CreateTicketScreen extends NativeComponent
 {
     public string $ticketId = '';
 

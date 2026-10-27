@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Mobile\App\Contracts;
+namespace Modules\Mobile\Contracts;
 
 use Illuminate\Support\Collection;
 

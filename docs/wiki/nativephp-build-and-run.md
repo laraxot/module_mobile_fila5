@@ -62,13 +62,13 @@ righe con la spunta (`view_map ✓`, `moderate_reports ✓`) senza verificare al
 | Bundle estratto, `/it/tickets` 200 nell'app, CSS/JS 200 | solo la dichiarazione in `INDEX.md` | non verificato oggi |
 | iOS, push, offline | nessun artefatto | non pronti |
 | PHPStan sul modulo | `./vendor/bin/phpstan analyse Modules/Mobile` da `laravel/`, exit 0 il 2026-10-14 | verificato |
-| Test | `./vendor/bin/pest Modules/Mobile/tests`: 1 test (`tests/Unit/Data/RestaurantDataTest.php`), 4 asserzioni, passa | verificato; copre solo i DTO ristorante |
+| Test | `./vendor/bin/pest Modules/Mobile/tests`: 1 test (`tests/Unit/Datas/RestaurantDataTest.php`), 4 asserzioni, passa | verificato; copre solo i data object ristorante |
 
 Vincolo: una build iOS firmata richiede macOS e Xcode, non producibile da questo host Linux.
 
 ## Limiti noti del codice (non corretti qui)
 
-- `Modules\Mobile\App\Contracts\MobileGatewayContract` e `Modules\Mobile\App\Data\MobileDemoData` dichiarano un namespace con
+- `Modules\Mobile\Contracts\RestaurantGateway` e `Modules\Mobile\Datas\*Data` dichiarano il namespace canonico del modulo
   `App` maiuscolo che non corrisponde al PSR-4 (`Modules\Mobile\` -> `app/`): `interface_exists` risponde falso per entrambi i nomi
   (tinker, 2026-10-14). Il contratto "agnostico" del README non e' quindi caricabile.
 - `app/Native/Screens/CreateTicketScreen.php` rende la vista `mobile::native.screens.ticket-detail`; in `resources/views/native/screens/` esistono solo `map`, `ticket-detail` e `ticket-list`, nessuna vista di creazione.

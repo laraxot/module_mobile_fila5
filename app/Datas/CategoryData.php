@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Modules\Mobile\Data;
+namespace Modules\Mobile\Datas;
 
 final readonly class CategoryData
 {

@@ -6,7 +6,7 @@ namespace Tests\Modules\Mobile;
 
 use Illuminate\Foundation\Application;
 use Modules\Mobile\Providers\MobileServiceProvider;
-use Tests\Modules\Xot\XotBaseTestCase;
+use Modules\Xot\Tests\XotBaseTestCase;
 
 /**
  * Base test case for Mobile module.

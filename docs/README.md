@@ -1,5 +1,4 @@
 ---
-<<<<<<< .merge_file_vmwsOP
 title: "Mobile module documentation"
 type: readme
 status: stale
@@ -10,6 +9,14 @@ qmd: "mobile nativephp readme acceptance criteria stale verification"
 ---
 
 > Nota 2026-10-14 (docs-audit): le tabelle di stato, la sezione rotte, la struttura, i comandi di build e gli esempi di codice di questo README non corrispondono al codice (11 punti nella sezione seguente, prove in [wiki/nativephp-build-and-run.md](wiki/nativephp-build-and-run.md)). Contenuto non riscritto, verificare prima di usarlo. Ingresso canonico del `docs/`: [00-INDEX.md](00-INDEX.md).
+
+## Contratti dati verificati
+
+I data object del modulo sono in `app/Datas/` e sotto il namespace
+`Modules\\Mobile\\Datas`; il contratto completo è in
+[data-contracts.md](architecture/data-contracts.md). Non creare `app/Data/`:
+la forma plurale è la convenzione del monorepo e mantiene allineati autoload,
+namespace e consumer.
 
 ## Correzioni verificate (2026-10-14)
 
@@ -24,24 +31,9 @@ Confronto con il codice di `laravel/Modules/Mobile` e con il progetto. Il testo 
 7. Configurazione: `resources/json/app-config.json` non esiste e non viene creato da un "MobileDemoDataSeeder" (classe inesistente; i seeder sono MobileSeeder, DemoDataSeeder, OrderSeeder, WaiterSeeder, MenuItemSeeder). Lo scrive `build-apk.sh`, che e' uno stub: stampa spunte fisse e non compila nulla.
 8. "Contenitore agnostico" e "Contract interface defined": `Modules\Mobile\App\Contracts\MobileGatewayContract` ha un namespace non conforme al PSR-4 e non e' caricabile (tinker: `interface_exists` falso). Il modulo contiene ancora il dominio cameriere/ordini/KDS (modelli `OrderQueue` e `WaiterSession`, 6 Actions, 2 Notifications `Kds*`, `RestaurantGateway`, tabelle `mobile_waiter_sessions` e `mobile_order_queue`).
 9. Tabella BMAD: STORY-410, STORY-371 e STORY-397 non sono story del modulo; stanno in `docs/stories/` alla radice del repo. Le story del modulo sono le 9 in [stories/](stories/).
-10. Checklist demo: "All PHPStan checks passing" e' vero oggi (`phpstan analyse Modules/Mobile`, exit 0). Senza evidenza nel modulo: audit di accessibilita' completo, flussi guest/user/moderator/admin, "APK build script created". Il solo test Pest (`tests/Unit/Data/RestaurantDataTest.php`) copre i DTO ristorante. Vero: `Themes/Sixteen/resources/views/mobile/` esiste.
+10. Checklist demo: "All PHPStan checks passing" e' vero oggi (`phpstan analyse Modules/Mobile`, exit 0). Senza evidenza nel modulo: audit di accessibilita' completo, flussi guest/user/moderator/admin, "APK build script created". Il solo test Pest (`tests/Unit/Datas/RestaurantDataTest.php`) copre i data object ristorante. Vero: `Themes/Sixteen/resources/views/mobile/` esiste.
 11. Palette: la tabella ammette `#E8E8E8` a 1.45:1, mentre la tabella WCAG sotto afferma testo sempre >= 4.5:1. Palette e tipografia sono specifiche di design non misurate sul codice.
 
-=======
-title: "Mobile: contratto del modulo NativePHP"
-type: concept
-module: Mobile
-tags: [mobile, nativephp, contract, readme]
-created: 2026-09-28
-updated: 2026-10-14
-qmd: "mobile nativephp contratto modulo agnostico user flows ui ux accessibilita build apk"
-issues:
-  - "https://github.com/laraxot/module_mobile_fila5/issues/1"
-discussions:
-  - "https://github.com/laraxot/module_mobile_fila5/discussions/2"
----
-
->>>>>>> .merge_file_PCmX0R
 # Mobile Module Documentation
 
 ## Stato Restaurant waiter (2026-10-14)
