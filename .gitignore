@@ -1,4 +1,5 @@
 .env
+*.lock
 .env.*
 !.env.example
 
