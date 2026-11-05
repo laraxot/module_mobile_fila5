@@ -1,13 +1,23 @@
+<<<<<<< .merge_file_LSOBCA
 # Git LFS is forbidden in this repository. Binary files remain normal Git blobs.
 # This file is the canonical root policy for modules and themes.
+=======
+# Git LFS vietato: tutti i binari restano blob Git normali.
+# Canon: docs/wiki/rules/no-git-lfs.md
+
+>>>>>>> .merge_file_TxBS5j
 * text=auto
 *.css linguist-vendored
 *.scss linguist-vendored
 *.js linguist-vendored
 CHANGELOG.md export-ignore
 
+<<<<<<< .merge_file_LSOBCA
 # `binary` implies no text normalization, diff, or merge driver.
 # `!filter` disables any inherited Git LFS filter.
+=======
+# Binary files: binary disables text normalization; !filter blocks inherited LFS.
+>>>>>>> .merge_file_TxBS5j
 *.png binary !filter
 *.jpg binary !filter
 *.jpeg binary !filter
