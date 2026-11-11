@@ -1,3 +1,10 @@
+.env
+*.lock
+*.lock
+*.lock
+.env.*
+!.env.example
+
 test-results/
 mobile.code-workspace
 docs/archive/
