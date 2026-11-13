@@ -28,7 +28,7 @@ class DemoDataSeeder extends Seeder
         OrderQueue::create([
             'table_id' => 1,
             'waiter_session_id' => $waiter1->id, 'status' => OrderQueue::STATUS_PENDING,
-            'order_data' => ['items' => [['name' => 'Caffè', 'quantity' => 1, 'price' => 1.50]], 'total' => 1.50],
+            'order_data' => ['items' => [['name' => 'Coffee', 'quantity' => 1, 'price' => 1.50]], 'total' => 1.50],
             'sync_attempts' => 0,
         ]);
 

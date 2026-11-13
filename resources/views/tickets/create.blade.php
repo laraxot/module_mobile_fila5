@@ -50,7 +50,7 @@
                 <textarea name="description" rows="4" placeholder="Descrivi il problema in dettaglio" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
             </div>
 
-            <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg text-sm">Invia segnalazione</button>
+            <button type="submit" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-lg text-sm">Submit report</button>
         </form>
     </div>
 </x-mobile::layout>

@@ -109,7 +109,7 @@
                         var statusClass = 'status-' + esc(props.status?.value || 'open').replace(/[^a-z0-9_-]/gi, '');
                         var popupContent = '<h3>' + esc(props.title || 'Segnalazione') + '</h3>' +
                             '<p><strong>Tipo:</strong> ' + esc(props.type?.label || '-') + '</p>' +
-                            '<p><strong>Città:</strong> ' + esc(props.city || '-') + '</p>' +
+                            '<p><strong>City:</strong> ' + esc(props.city || '-') + '</p>' +
                             '<p><strong>Indirizzo:</strong> ' + esc(props.address || '-') + '</p>' +
                             '<p><strong>Stato:</strong> <span class="' + statusClass + '">' + esc(props.status?.label || '-') + '</span></p>' +
                             '<p><a href="' + safeUrl(props.detail_url) + '">Dettaglio →</a></p>';

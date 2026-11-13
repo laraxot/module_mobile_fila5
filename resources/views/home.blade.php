@@ -2,7 +2,7 @@
     <div class="bg-white shadow-sm">
         <div class="max-w-lg mx-auto px-4 py-6">
             <h1 class="text-2xl font-bold text-gray-900">FixCity</h1>
-            <p class="text-sm text-gray-500 mt-1">La tua città, le tue segnalazioni</p>
+            <p class="text-sm text-gray-500 mt-1">Your city, your reports</p>
         </div>
     </div>
 

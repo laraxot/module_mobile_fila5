@@ -1,7 +1,7 @@
 <x-mobile::layout>
     <div class="bg-white shadow-sm sticky top-0 z-10">
         <div class="max-w-lg mx-auto px-4 py-4">
-            <a href="/mobile/segnalazioni" class="text-blue-600 text-sm">← Torna alle segnalazioni</a>
+            <a href="/mobile/segnalazioni" class="text-blue-600 text-sm">← Back to reports</a>
             <h1 class="text-xl font-bold text-gray-900 mt-2" x-data="{ title: '' }" x-init="fetch('/api/tickets/geojson').then(r => r.json()).then(d => title = d.features.find(f => f.properties.id === '{{ request()->segment(3) }}')?.properties.title || 'Dettaglio segnalazione')" x-text="title"></h1>
         </div>
     </div>
