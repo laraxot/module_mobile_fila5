@@ -11,6 +11,8 @@ use Modules\Mobile\Datas\ProductData;
 use Modules\Mobile\Datas\TableData;
 use Modules\Xot\Actions\Cast\SafeStringCastAction;
 
+use function Safe\preg_match;
+
 /**
  * Risolve un payload QR in contesto reale (tavolo / prodotto / categoria).
  *
@@ -29,8 +31,7 @@ class ScanQrAction
 {
     public function __construct(
         private readonly RestaurantGateway $restaurant,
-    ) {
-    }
+    ) {}
 
     /**
      * @return array{
@@ -64,15 +65,19 @@ class ScanQrAction
      */
     private function parse(string $raw): array
     {
-        if (preg_match('/^(table|product|category)\s*:\s*(.+)$/i', $raw, $m) === 1) {
-            $type = strtolower($m[1]);
+        preg_match('/^(table|product|category)\s*:\s*(.+)$/i', $raw, $m);
+        if ($m !== []) {
+            $type = match (strtolower($m[1])) {
+                'table' => 'table',
+                'product' => 'product',
+                default => 'category',
+            };
             $id = trim($m[2]);
 
             if ($id === '') {
                 throw new InvalidArgumentException(sprintf('QR %s senza identificativo', $type));
             }
 
-            /** @var 'table'|'product'|'category' $type */
             return [$type, $id];
         }
 

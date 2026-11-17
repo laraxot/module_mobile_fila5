@@ -7,6 +7,7 @@ namespace Modules\Mobile\Actions\Mobile;
 use InvalidArgumentException;
 use Modules\Mobile\Contracts\RestaurantGateway;
 use Modules\Mobile\Models\OrderQueue;
+use Modules\Xot\Actions\Cast\SafeIntCastAction;
 use Modules\Xot\Actions\Cast\SafeStringCastAction;
 use Spatie\QueueableAction\QueueableAction;
 use Throwable;
@@ -24,8 +25,7 @@ class TakeOrderAction
 
     public function __construct(
         private readonly RestaurantGateway $restaurant,
-    ) {
-    }
+    ) {}
 
     /** @param array<string, mixed> $payload */
     public function execute(array $payload): string
@@ -56,9 +56,9 @@ class TakeOrderAction
                 throw new InvalidArgumentException('ogni item deve essere un oggetto');
             }
             $normalizedItems[] = [
-                'product_id' => (int) ($row['product_id'] ?? 0),
-                'quantity' => max(1, (int) ($row['quantity'] ?? 1)),
-                'notes' => isset($row['notes']) ? (string) $row['notes'] : null,
+                'product_id' => SafeIntCastAction::cast($row['product_id'] ?? 0),
+                'quantity' => max(1, SafeIntCastAction::cast($row['quantity'] ?? 1, 1)),
+                'notes' => isset($row['notes']) ? SafeStringCastAction::cast($row['notes']) : null,
                 'modifiers' => is_array($row['modifiers'] ?? null) ? $row['modifiers'] : [],
             ];
             if ($normalizedItems[array_key_last($normalizedItems)]['product_id'] < 1) {

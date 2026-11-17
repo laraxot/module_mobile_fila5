@@ -14,15 +14,18 @@ use Modules\Mobile\Datas\TableData;
  */
 final class FakeRestaurantGateway implements RestaurantGateway
 {
-    /** @param array<string, TableData> $tables */
-    /** @param array<string, ProductData> $products */
-    /** @param array<string, CategoryData> $categories */
+    /**
+     * Chiavi = id del record; PHP converte gli id numerici in chiavi int.
+     *
+     * @param  array<array-key, TableData>  $tables
+     * @param  array<array-key, ProductData>  $products
+     * @param  array<array-key, CategoryData>  $categories
+     */
     public function __construct(
         private array $tables = [],
         private array $products = [],
         private array $categories = [],
-    ) {
-    }
+    ) {}
 
     public function table(int|string $tableId): ?TableData
     {
@@ -49,7 +52,7 @@ final class FakeRestaurantGateway implements RestaurantGateway
         return array_values($this->categories);
     }
 
-    public function createOrder(array $order): int|string
+    public function createOrder(array $order): int
     {
         return 0;
     }
@@ -77,7 +80,7 @@ test('scan numeric payload is treated as table id', function (): void {
     $result = $action->execute('12');
 
     expect($result['type'])->toBe('table')
-        ->and($result['table']->tableId)->toBe(12);
+        ->and($result['table']?->tableId)->toBe(12);
 });
 
 test('scan product qr resolves an active product', function (): void {
@@ -113,14 +116,14 @@ test('missing or inactive table raises a safe error', function (): void {
 });
 
 test('missing product or category raises a safe error', function (): void {
-    $action = new ScanQrAction(new FakeRestaurantGateway());
+    $action = new ScanQrAction(new FakeRestaurantGateway);
 
     expect(fn () => $action->execute('product:1'))->toThrow(InvalidArgumentException::class)
         ->and(fn () => $action->execute('category:1'))->toThrow(InvalidArgumentException::class);
 });
 
 test('empty or unknown qr format is rejected', function (): void {
-    $action = new ScanQrAction(new FakeRestaurantGateway());
+    $action = new ScanQrAction(new FakeRestaurantGateway);
 
     expect(fn () => $action->execute(''))->toThrow(InvalidArgumentException::class)
         ->and(fn () => $action->execute('   '))->toThrow(InvalidArgumentException::class)

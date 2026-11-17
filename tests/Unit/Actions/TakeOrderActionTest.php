@@ -10,9 +10,7 @@ use Modules\Mobile\Datas\TableData;
 
 final class TakeOrderFakeGateway implements RestaurantGateway
 {
-    public function __construct(private ?TableData $table = null)
-    {
-    }
+    public function __construct(private ?TableData $table = null) {}
 
     public function table(int|string $tableId): ?TableData
     {
@@ -39,7 +37,7 @@ final class TakeOrderFakeGateway implements RestaurantGateway
         return [];
     }
 
-    public function createOrder(array $order): int|string
+    public function createOrder(array $order): int
     {
         return 1;
     }

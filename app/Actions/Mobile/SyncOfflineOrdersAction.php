@@ -7,6 +7,8 @@ namespace Modules\Mobile\Actions\Mobile;
 use Illuminate\Support\Facades\Http;
 use Modules\Mobile\Contracts\RestaurantGateway;
 use Modules\Mobile\Models\OrderQueue;
+use Modules\Xot\Actions\Cast\SafeIntCastAction;
+use Modules\Xot\Actions\Cast\SafeStringCastAction;
 use Spatie\QueueableAction\QueueableAction;
 use Throwable;
 
@@ -20,8 +22,7 @@ class SyncOfflineOrdersAction
 
     public function __construct(
         private readonly ?RestaurantGateway $restaurant = null,
-    ) {
-    }
+    ) {}
 
     /** @return array{synced: list<int|string>, failed: list<int|string>, total: int, timestamp: string} */
     public function execute(string $waiterSessionId): array
@@ -42,9 +43,9 @@ class SyncOfflineOrdersAction
                 if ($gateway !== null) {
                     $gateway->createOrder([
                         'table_id' => $queueItem->table_id,
-                        'idempotency_key' => (string) ($orderData['idempotency_key'] ?? $queueItem->id),
+                        'idempotency_key' => SafeStringCastAction::cast($orderData['idempotency_key'] ?? $queueItem->id),
                         'items' => is_array($orderData['items'] ?? null) ? $orderData['items'] : [],
-                        'covers' => (int) ($orderData['covers'] ?? 1),
+                        'covers' => SafeIntCastAction::cast($orderData['covers'] ?? 1, 1),
                         'waiter_id' => $orderData['waiter_id'] ?? null,
                         'source' => 'mobile_waiter',
                         'send_to_stations' => true,
