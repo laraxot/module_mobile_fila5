@@ -21,7 +21,7 @@ class OrderSeeder extends Seeder
         OrderQueue::query()->create([
             'waiter_session_id' => $waiter->id,
             'status' => OrderQueue::STATUS_PENDING,
-            'order_data' => json_encode(['items' => ['caffè', 'cornetto'], 'total' => 4.50]),
+            'order_data' => json_encode(['items' => ['coffee', 'croissant'], 'total' => 4.50]),
             'sync_attempts' => 0,
         ]);
 

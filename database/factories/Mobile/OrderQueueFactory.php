@@ -19,7 +19,7 @@ class OrderQueueFactory extends Factory
                 ->id,
             'table_id' => 1,
             'status' => OrderQueue::STATUS_PENDING,
-            'order_data' => ['items' => ['caffè', 'cornetto'], 'total' => 4.50],
+            'order_data' => ['items' => ['coffee', 'croissant'], 'total' => 4.50],
             'sync_attempts' => 0,
         ];
     }

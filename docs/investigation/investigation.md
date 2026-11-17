@@ -15,8 +15,6 @@ related:
   - ../00-INDEX.md
 ---
 
-> Nota 2026-10-14 (docs-audit): modello non compilato: il titolo parla di affidabilita' delle push ma il corpo ha segnaposto (Feature A/B/C) e criteri di contrasto estranei al modulo; dice '8 stories' mentre stories/ ne ha 9; nessuna indagine reale. Contenuto non riscritto, verificare prima di usarlo.
-
 # Investigation: Push Notification Reliability
 
 > Stato 2026-10-14: bozza generata da template, non e' un'investigazione completata. Le sezioni "Feature Missing" e "Acceptance Criteria"

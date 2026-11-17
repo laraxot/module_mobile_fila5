@@ -108,11 +108,11 @@ class TicketDetailScreen extends NativeComponent
         $this->ticket['status_label'] = $this->getStatusLabel($newStatus);
         $this->timeline[] = [
             'action' => 'status_changed',
-            'label' => 'Stato aggiornato a ' . $this->getStatusLabel($newStatus),
+            'label' => 'Status updated to ' . $this->getStatusLabel($newStatus),
             'user' => auth()->user()->name ?? 'Operatore',
             'timestamp' => now()->toIso8601String(),
         ];
-        $this->showToast('Stato aggiornato');
+        $this->showToast('Status updated');
     }
 
     public function addInternalNote(string $note): void
@@ -189,7 +189,7 @@ class TicketDetailScreen extends NativeComponent
                 'status_color' => '#10b981',
                 'city' => 'Milano',
                 'address' => 'Piazza Duomo',
-                'description' => 'Il lampione all\'angolo con Galleria Vittorio Emanuele non funziona da 3 giorni. Buio totale la sera.',
+                'description' => 'The streetlight at the corner of Main Street has not worked for 3 days. Total darkness at night.',
                 'location' => ['lat' => 45.4642, 'lng' => 9.1914],
                 'created_at' => '2026-09-24T08:15:00Z',
                 'updated_at' => '2026-09-25T16:45:00Z',
@@ -229,7 +229,7 @@ class TicketDetailScreen extends NativeComponent
 
         return $tickets[$id] ?? [
             'id' => $id,
-            'title' => 'Segnalazione non trovata',
+            'title' => 'Report not found',
             'type' => 'other',
             'type_label' => 'Altro',
             'type_icon' => 'help',
@@ -253,13 +253,13 @@ class TicketDetailScreen extends NativeComponent
             'DMO-001' => [
                 ['action' => 'created', 'label' => 'Segnalazione creata da Mario Rossi', 'user' => 'Mario Rossi', 'timestamp' => '2026-09-25T10:30:00Z'],
                 ['action' => 'assigned', 'label' => 'Assegnata a Ufficio Tecnico Milano Centro', 'user' => 'Sistema', 'timestamp' => '2026-09-25T10:35:00Z'],
-                ['action' => 'status_changed', 'label' => 'Stato aggiornato a In Corso', 'user' => 'Operatore Tecnico', 'timestamp' => '2026-09-26T14:20:00Z'],
-                ['action' => 'note', 'label' => 'Sopralluogo effettuato, ordinato materiale per riparazione', 'user' => 'Operatore Tecnico', 'timestamp' => '2026-09-26T14:25:00Z'],
+                ['action' => 'status_changed', 'label' => 'Status updated to In Progress', 'user' => 'Technical Operator', 'timestamp' => '2026-09-26T14:20:00Z'],
+                ['action' => 'note', 'label' => 'Sopralluogo effettuato, ordinato materiale per riparazione', 'user' => 'Technical Operator', 'timestamp' => '2026-09-26T14:25:00Z'],
             ],
             'DMO-002' => [
                 ['action' => 'created', 'label' => 'Segnalazione creata da Laura Bianchi', 'user' => 'Laura Bianchi', 'timestamp' => '2026-09-24T08:15:00Z'],
                 ['action' => 'assigned', 'label' => 'Assegnata a Ditta Esterna LuceSpA', 'user' => 'Sistema', 'timestamp' => '2026-09-24T08:20:00Z'],
-                ['action' => 'status_changed', 'label' => 'Stato aggiornato a In Corso', 'user' => 'Tecnico LuceSpA', 'timestamp' => '2026-09-25T09:00:00Z'],
+                ['action' => 'status_changed', 'label' => 'Status updated to In Progress', 'user' => 'Tecnico LuceSpA', 'timestamp' => '2026-09-25T09:00:00Z'],
                 ['action' => 'resolved', 'label' => 'Risolto: Sostituito corpo illuminante', 'user' => 'Tecnico LuceSpA', 'timestamp' => '2026-09-25T16:45:00Z'],
             ],
             'DMO-003' => [

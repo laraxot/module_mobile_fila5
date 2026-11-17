@@ -33,7 +33,7 @@
             </div>
         @empty
             <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm text-sm text-gray-500">
-                Nessun ordine aperto per questo tavolo.
+                No open order for this table.
             </div>
         @endforelse
     </div>
