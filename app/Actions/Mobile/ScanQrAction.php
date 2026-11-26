@@ -26,6 +26,9 @@ use function Safe\preg_match;
  * sollevano InvalidArgumentException (errore sicuro, senza leak cross-tenant).
  *
  * @see docs/bmad-output/stories/1.1.real-catalog-and-qr-context.story.md
+ * @see docs/contracts/scan-qr-action.md
+ *
+ * @contract docs/contracts/scan-qr-action.md
  */
 class ScanQrAction
 {

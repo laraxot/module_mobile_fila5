@@ -11,14 +11,18 @@ use Spatie\QueueableAction\QueueableAction;
 /**
  * Action for splitting bill on mobile device.
  * Supports equal split, custom amounts, or item-based split.
+ *
+ * @see docs/contracts/split-bill-action.md
+ *
+ * @contract docs/contracts/split-bill-action.md
  */
 class SplitBillAction
 {
     use QueueableAction;
 
     /**
-     * @param array<int, array{notes?: string, amount?: float|int, item_ids?: array<int, int>}> $splits
-     * @param array<int, string>|null $paymentMethods
+     * @param  array<int, array{notes?: string, amount?: float|int, item_ids?: array<int, int>}>  $splits
+     * @param  array<int, string>|null  $paymentMethods
      * @return list<array{order_id: string, amount: float, method: string, notes: string}>
      */
     public function execute(

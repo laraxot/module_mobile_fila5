@@ -4,13 +4,20 @@ declare(strict_types=1);
 
 namespace Modules\Mobile\Actions\Mobile;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 use Modules\Mobile\Models\OrderQueue;
+use Modules\Mobile\Notifications\KdsOrderNotification;
+use Modules\Mobile\Notifications\KdsPushNotification;
 use Spatie\QueueableAction\QueueableAction;
 
 /**
  * Action for sending order to Kitchen Display System (KDS).
  * Pushes notification to kitchen screens and mobile devices.
+ *
+ * @see docs/contracts/kds-notification-action.md
+ *
+ * @contract docs/contracts/kds-notification-action.md
  */
 class KdsNotificationAction
 {
@@ -30,6 +37,7 @@ class KdsNotificationAction
             'waiter_name' => 'Operatore Demo',
             'items' => array_map(static function (mixed $item): array {
                 $item = is_array($item) ? $item : [];
+
                 return [
                     'id' => $item['id'] ?? uniqid(),
                     'product_name' => $item['name'] ?? 'Prodotto Demo',
@@ -47,13 +55,13 @@ class KdsNotificationAction
         ];
 
         // Broadcast to kitchen channel
-        broadcast(new \Modules\Mobile\Notifications\KdsOrderNotification($payload))
+        broadcast(new KdsOrderNotification($payload))
             ->toOthers();
 
         // Also send push notification to kitchen staff
         Notification::send(
             $this->getKitchenStaff(),
-            new \Modules\Mobile\Notifications\KdsPushNotification($payload)
+            new KdsPushNotification($payload)
         );
     }
 
@@ -79,10 +87,10 @@ class KdsNotificationAction
         return $priority;
     }
 
-    /** @return \Illuminate\Support\Collection<int, object> */
-    private function getKitchenStaff(): \Illuminate\Support\Collection
+    /** @return Collection<int, object> */
+    private function getKitchenStaff(): Collection
     {
-        /** @var \Illuminate\Support\Collection<int, object> $staff */
+        /** @var Collection<int, object> $staff */
         $staff = collect();
 
         return $staff;

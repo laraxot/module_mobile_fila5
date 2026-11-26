@@ -1,79 +1,57 @@
-# 📱 Mobile — agnostic NativePHP host module
+# Mobile — NativePHP per applicazioni Laravel
 
-## Contratto del modulo
+[![Laravel](https://img.shields.io/badge/Laravel-13-FF2D20?logo=laravel&logoColor=white)](https://laravel.com/)
+[![PHP](https://img.shields.io/badge/PHP-%5E8.4-777BB4?logo=php&logoColor=white)](https://www.php.net/)
+[![NativePHP](https://img.shields.io/badge/NativePHP-mobile-111827.svg)](https://nativephp.com/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-## Descrizione
-Modulo mobile **NativePHP** riusabile per iOS/Android. Non contiene logica di dominio
-FixCity né presuppone ristorante, Comune o altro verticale: il progetto host registra
-le proprie schermate native e fornisce gli adapter tramite contratti.
+Mobile fornisce una base NativePHP riusabile per applicazioni iOS e Android.
+Il modulo non conosce il dominio, il prodotto, il tenant o le schermate
+dell'applicazione host: integrazioni, navigazione, dati e policy arrivano da
+contratti e adapter del progetto che lo installa.
 
-## Consumer FixCity
+## Responsabilità
 
-Il consumer FixCity usa il GeoJSON canonico `public_html/data/tickets.json` e le
-stesse policy/Actions del web. La schermata nativa iniziale è documentata in
-`Modules/Fixcity/docs/bmad/fixcity-nativephp-mobile.md`.
+- bootstrap e integrazione NativePHP;
+- contratti per adapter e servizi mobile;
+- convenzioni condivise per shell, asset e build;
+- supporto ai flussi autenticati senza duplicare la logica di dominio.
 
-### 1. Cittadino non loggato
-- Visualizzazione mappa con segnalazioni (GeoJSON)
-- Invio segnalazione rapida (guest)
-- Dettaglio ticket
-
-### 2. Cittadino loggato
-- Track ticket in tempo reale
-- Storico segnalazioni
-- Notifiche push
-- Risposta PA
-
-### 3. Operatore di quartiere
-- Gestione ticket assegnati
-- Note interne
-- Aggiornamento stato
-- Geo-search
-
-### 4. Amministrazione comunale
-- Dashboard PA completa
-- Statistiche e export
-- Configurazione moduli
-- Reportistica
+Le feature verticali, le schermate di business, i feed e le policy restano nei
+moduli owner dell'applicazione ospitante.
 
 ## Installazione
-```bash
-cd laravel
+
+~~~bash
 composer require nativephp/mobile
-# Genera lo shell Android NativePHP secondo la documentazione ufficiale
 php artisan native:install
 php artisan native:debug
-```
+~~~
 
-L'APK debug verificato per questa demo è disponibile in
-`laravel/nativephp/android/app/build/outputs/apk/debug/app-debug.apk`.
-La firma release, iOS/macOS, push provider e store submission richiedono credenziali
-e ambienti esterni: non vengono simulati né inclusi nel modulo.
+La firma release, i provider push, i certificati e la pubblicazione sugli
+store richiedono credenziali e ambienti configurati dall'host.
 
 ## Architettura
-```
-Mobile/
-├── app/
-│   ├── Actions/       # Azioni business
-│   ├── Contracts/     # Interfacce
-│   ├── Models/        # Eloquent models
-│   └── Providers/         # Module registration; no front-office controllers
-├── resources/views/   # Blade (PWA-friendly)
-├── docs/             # Documentazione
-└── module.json       # Manifest
-```
 
-## Dipendenze
-- nativephp/mobile ^4.5
-- fixcity (core)
-- geo (mappa)
-- user (auth)
+| Area | Responsabilità |
+|---|---|
+| app/Actions | operazioni riusabili e orchestrazione |
+| app/Contracts | punti di integrazione dell'host |
+| app/Models | modelli propri del modulo, quando necessari |
+| docs/ | contratti, ADR e guide operative |
 
-## Status verificato
-- ✅ modulo agnostico, senza controller FO, route file o seeders verticali
-- ✅ contratto gateway disponibile per il consumer di dominio
-- ✅ NativePHP Mobile 4.5.2 installato e shell Android generato
-- ✅ APK Android debug generato in `nativephp/android/app/build/outputs/apk/debug/app-debug.apk`
-- ⚠️ le schermate native FixCity sono un adapter consumer da completare dopo la
-  decisione del contratto di integrazione Folio/Volt; le pagine web restano nel modulo
-  owner e non vengono duplicate qui
+## Documentazione e collaborazione
+
+- [documentazione](docs/)
+- [issue tracker](https://github.com/laraxot/module_mobile_fila5/issues)
+- [pull request](https://github.com/laraxot/module_mobile_fila5/pulls)
+- [Actions](https://github.com/laraxot/module_mobile_fila5/actions)
+- [Security](https://github.com/laraxot/module_mobile_fila5/security)
+
+Apri una issue con contesto, versione NativePHP, piattaforma e riproduzione
+minima. Le modifiche devono includere test o una motivazione verificabile
+quando il comportamento dipende dall'ambiente mobile.
+
+## Licenza
+
+Distribuito con licenza [MIT](LICENSE).

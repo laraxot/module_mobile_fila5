@@ -55,7 +55,7 @@ test('take order rejects a payload without session table or idempotency', functi
             'idempotency_key' => 'k1',
             'items' => [],
         ]))->toThrow(InvalidArgumentException::class);
-});
+})->group('MOBILE-TAKEORDER-INV-3');
 
 test('take order rejects inactive or missing table', function (): void {
     $action = new TakeOrderAction(new TakeOrderFakeGateway(null));
@@ -66,4 +66,4 @@ test('take order rejects inactive or missing table', function (): void {
         'idempotency_key' => 'k1',
         'items' => [['product_id' => 1, 'quantity' => 1]],
     ]))->toThrow(InvalidArgumentException::class);
-});
+})->group('MOBILE-TAKEORDER-INV-2');
