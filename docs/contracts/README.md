@@ -29,4 +29,4 @@ Il docblock dell'Action rimanda al file con la riga `Contratto di comportamento:
 Chi cambia il comportamento aggiorna il contratto nello stesso commit.
 
 ## Contratti
-
+- [scan-qr-action.md](scan-qr-action.md)
