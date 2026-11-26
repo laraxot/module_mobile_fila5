@@ -3,37 +3,46 @@ title: "Contratto — ScanQrAction"
 type: contract
 action: "Modules\\Mobile\\Actions\\Mobile\\ScanQrAction"
 module: Mobile
-status: accepted
+status: active
+tags: [contract, action, mobile, qr]
+created: 2026-11-26
 updated: 2026-11-26
 ---
 
 # ScanQrAction
 
-Classe: `Modules\\Mobile\\Actions\\Mobile\\ScanQrAction`
+Contratto di comportamento (regola: `Modules/Xot/docs/rules/action-behavioral-contract.md`).
+Sorgente: `app/Actions/Mobile/ScanQrAction.php`. Risolve un payload QR in contesto reale
+(tavolo/prodotto/categoria) via `RestaurantGateway`. Solo lettura.
 
 ## Input
 
-- `string $qrPayload`
+- `string $qrPayload`: `table:<id>`, `product:<id>`, `category:<id>`, oppure solo id numerico (= tavolo).
 
 ## Output
 
-- `array` contesto catalogo/ordine risolto dal gateway (niente mock inline).
+- Array `{ type, table, product, category, raw }` con un solo ramo valorizzato.
 
 ## Invarianti
 
-| ID | Regola | Verifica |
+| ID | Regola | Group Pest |
 |---|---|---|
-| MOBILE-QR-INV-1 | Delega a `RestaurantGateway`; non contiene dati mock hard-coded nell'Action. | `->group('MOBILE-QR-INV-1')` |
-| MOBILE-QR-INV-2 | Record mancanti/inattivi non inventano un menu: falliscono o tornano vuoto secondo il gateway. | `->group('MOBILE-QR-INV-2')` |
+| MOBILE-SCANQR-INV-1 | Payload vuoto o formato sconosciuto → `InvalidArgumentException`. | `MOBILE-SCANQR-INV-1` |
+| MOBILE-SCANQR-INV-2 | Tavolo, prodotto o categoria mancante (o tavolo inattivo) dal gateway → `InvalidArgumentException`, senza restituire dati. | `MOBILE-SCANQR-INV-2` |
+| MOBILE-SCANQR-INV-3 | Nessuna scrittura DB; delega solo a `RestaurantGateway`. | — (non dimostrato: i test usano un gateway finto e non guardano il database) |
 
 ## Effetti collaterali
 
-- Letture via gateway; nessun write di ordine qui.
+- Nessuno di persistenza; sole letture gateway.
 
 ## Errori
 
-- Errori gateway / payload invalido.
+- `InvalidArgumentException` su parse o risoluzione.
 
 ## Non fa
 
-- Non sincronizza ordini offline (`SyncOfflineOrdersAction`).
+- Non crea ordini (`TakeOrderAction`).
+- Non contiene mock di catalogo.
+
+Test: `tests/Unit/Actions/ScanQrActionTest.php`. `test('result shape never exposes foreign tenant fields')` prova che il risultato non
+ha `tenant_id` né `location_id`, ma è un controllo sulla forma dell'output, non su un invariante dichiarato.

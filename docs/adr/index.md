@@ -11,5 +11,5 @@ updated: 2026-11-26
 
 Indice operativo della cartella owner-local. Il formato e la governance condivisi sono in [Xot](../../../Xot/docs/adr/README.md).
 
-- [mobile-api-is-platform-agnostic.md](mobile-api-is-platform-agnostic.md)
-- [mobile-contracts-are-agnostic.md](mobile-contracts-are-agnostic.md)
+- [0001-mobile-api-is-platform-agnostic.md](0001-mobile-api-is-platform-agnostic.md)
+- [0002-mobile-contracts-are-agnostic.md](0002-mobile-contracts-are-agnostic.md)

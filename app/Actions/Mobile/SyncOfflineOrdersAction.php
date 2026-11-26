@@ -15,6 +15,10 @@ use Throwable;
 /**
  * Sync offline order queue with the server (story 2.2).
  * Preferisce RestaurantGateway::createOrder con source mobile_waiter.
+ *
+ * @see docs/contracts/sync-offline-orders-action.md
+ *
+ * @contract docs/contracts/sync-offline-orders-action.md
  */
 class SyncOfflineOrdersAction
 {

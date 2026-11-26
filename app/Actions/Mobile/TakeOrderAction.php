@@ -18,6 +18,10 @@ use Throwable;
  * Accoda l'ordine in `mobile_order_queue` con stato pending.
  * Valida il tavolo tramite RestaurantGateway (catalogo/tavoli reali).
  * Idempotency: stessa chiave + sessione → stessa riga in coda (no duplicati).
+ *
+ * @see docs/contracts/take-order-action.md
+ *
+ * @contract docs/contracts/take-order-action.md
  */
 class TakeOrderAction
 {

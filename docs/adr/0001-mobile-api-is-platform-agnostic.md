@@ -1,7 +1,14 @@
 ---
+title: "ADR — Mobile resta un guscio agnostico rispetto all'applicazione host"
+type: decision
 status: proposed
-date: 2026-11-23
+created: 2026-11-23
+updated: 2026-11-26
+module: Mobile
 decision-makers: Mobile module owner
+related:
+  - 0002-mobile-contracts-are-agnostic.md
+  - ../contracts/sync-offline-orders-action.md
 ---
 
 # Mobile resta un guscio agnostico rispetto all'applicazione host
@@ -45,7 +52,20 @@ Volt secondo la composizione dell'applicazione.
 
 ## Conferma
 
-- Contratti: [`MobileGatewayContract`](../../app/Contracts/MobileGatewayContract.php)
-  e [`RestaurantGateway`](../../app/Contracts/RestaurantGateway.php).
-- Route: [`routes/web.php`](../../routes/web.php) e [`routes/api.php`](../../routes/api.php).
-- Riferimento: [`docs/README.md`](../README.md).
+- Dipendenze: da `laravel/`, `rg -n 'Modules\\(Restaurant|Fixcity|Ticket)\b' Modules/Mobile/app Modules/Mobile/routes Modules/Mobile/config`
+  deve restare senza risultati (verificato il 2026-11-26: nessun risultato). Nessun test automatico lo controlla: finché non esiste,
+  è una voce di review. Proposta: una regola Pest arch in `Modules/Mobile/tests/Arch` che vieta quei namespace.
+- Porte: `app/Contracts/MobileGatewayContract.php` e `app/Contracts/RestaurantGateway.php`. `tests/Unit/Actions/TakeOrderActionTest.php`
+  gira con un gateway finto (`TakeOrderFakeGateway implements RestaurantGateway`): prova che `TakeOrderAction` funziona senza il dominio host.
+- Route: `routes/web.php` e `routes/api.php` restituiscono `[]` (verifica a vista).
+
+## Stato attuale
+
+Il codice rispetta la decisione sulle dipendenze, ma due punti la tradiscono nello spirito:
+
+- `Actions/Mobile/SyncOfflineOrdersAction.php` (riga 60): senza `RestaurantGateway` invia gli ordini a `https://api.sottana.com`, un host
+  di un progetto preciso, perché `config/mobile.php` non ha la chiave `api_url`. Dettaglio nel [contratto](../contracts/sync-offline-orders-action.md).
+- `config/bifrost.php` (`updater.owner` = `sottana`, `repo` = `restaurant-fila5`): l'aggiornamento dell'app punta al repository
+  del progetto di origine, non a quello dell'host.
+
+`MobileGatewayContract` non ha nessuna implementazione nel repository (`rg MobileGatewayContract`: solo l'interfaccia).

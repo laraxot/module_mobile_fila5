@@ -10,7 +10,7 @@ updated: 2026-11-26
 related:
   - kds-notification-action.md
   - split-bill-action.md
-  - ../adr/mobile-api-is-platform-agnostic.md
+  - ../adr/0001-mobile-api-is-platform-agnostic.md
 ---
 
 # SyncOfflineOrdersAction
@@ -68,11 +68,10 @@ Per ogni riga `pending`, nell'ordine:
 ## Limiti noti (difetti da correggere, non da imitare)
 
 - **Dati verso un dominio di un altro progetto.** `config/mobile.php` non definisce `api_url` (`rg api_url` nel modulo: solo questa
-  Action), quindi senza gateway l'Action invia gli ordini a `https://api.sottana.com`, un dominio che non è di questo progetto
-  (compare anche in `config/bifrost.php`, `owner` = `sottana`). Un host che non lega nessun `RestaurantGateway` spedisce righe
+  Action), quindi senza gateway l'Action invia gli ordini a `https://api.sottana.com`, il dominio del progetto di origine del modulo
+  (in `config/bifrost.php` l'`owner` è `sottana`), non di FixCity. Un host che non lega nessun `RestaurantGateway` spedisce righe
   d'ordine, id di sessione e di tavolo a quel server, senza autenticazione. Prima di usarla: definire `mobile.api_url` o
   legare il gateway.
 - `error_message` salva l'intero corpo della risposta HTTP in caso di errore (colonna `text`): contenuto non controllato.
 - `OrderQueue::$table_id` è documentato `int` ma la colonna è `foreignUuid`
   (`database/migrations/create_mobile_tables.php`, riga 35): il tipo dichiarato non corrisponde allo schema.
-- `now()->toISOString() ?? now()->toAtomString()`: il ramo `??` non scatta mai (`toISOString` restituisce stringa).

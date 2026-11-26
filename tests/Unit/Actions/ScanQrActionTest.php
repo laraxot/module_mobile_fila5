@@ -113,14 +113,14 @@ test('missing or inactive table raises a safe error', function (): void {
 
     expect(fn () => $action->execute('table:9'))->toThrow(InvalidArgumentException::class)
         ->and(fn () => $action->execute('table:999'))->toThrow(InvalidArgumentException::class);
-});
+})->group('MOBILE-SCANQR-INV-2');
 
 test('missing product or category raises a safe error', function (): void {
     $action = new ScanQrAction(new FakeRestaurantGateway);
 
     expect(fn () => $action->execute('product:1'))->toThrow(InvalidArgumentException::class)
         ->and(fn () => $action->execute('category:1'))->toThrow(InvalidArgumentException::class);
-});
+})->group('MOBILE-SCANQR-INV-2');
 
 test('empty or unknown qr format is rejected', function (): void {
     $action = new ScanQrAction(new FakeRestaurantGateway);
@@ -129,7 +129,7 @@ test('empty or unknown qr format is rejected', function (): void {
         ->and(fn () => $action->execute('   '))->toThrow(InvalidArgumentException::class)
         ->and(fn () => $action->execute('unknown:foo'))->toThrow(InvalidArgumentException::class)
         ->and(fn () => $action->execute('table:'))->toThrow(InvalidArgumentException::class);
-});
+})->group('MOBILE-SCANQR-INV-1');
 
 test('result shape never exposes foreign tenant fields', function (): void {
     $table = new TableData(1, 'T1', 4, 'Sala', 'available');
