@@ -30,5 +30,5 @@ interface RestaurantGateway
     public function categories(): array;
 
     /** @param array<string, mixed> $order */
-    public function createOrder(array $order): int|string;
+    public function createOrder(array $order): int;
 }
